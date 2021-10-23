@@ -77,6 +77,20 @@ public class Chassis extends SubsystemBase {
     backRight.setVelocity(velBR);
   }
 
+  public void setAllBrake(boolean isBrake){
+    topLeft.setBrakeMode(isBrake);
+    backLeft.setBrakeMode(isBrake);
+    topRight.setBrakeMode(isBrake);
+    backRight.setBrakeMode(isBrake);
+  }
+
+  public void stopMotors(){
+    topLeft.stopMotors();
+    backLeft.stopMotors();
+    topRight.stopMotors();
+    backRight.stopMotors();
+  }
+
   /**
    * swerve drive movement
    * @param forward the forward speed between (-1,1)
