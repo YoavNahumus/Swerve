@@ -2,15 +2,15 @@ package frc.robot.utils;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import frc.robot.Constants;
 
 public class SwerveUnit implements Sendable{
-    private final TalonFX dirMotor;
-    private final TalonFX moveMotor;
+    private final WPI_TalonFX dirMotor;
+    private final WPI_TalonFX moveMotor;
 
     private boolean isInverted;
 
@@ -21,8 +21,8 @@ public class SwerveUnit implements Sendable{
 
 
     public SwerveUnit(int dirMotorPort, int moveMotorPort){
-        dirMotor = new TalonFX(dirMotorPort);
-        moveMotor = new TalonFX(moveMotorPort);
+        dirMotor = new WPI_TalonFX(dirMotorPort);
+        moveMotor = new WPI_TalonFX(moveMotorPort);
 
         moveMotor.config_kD(0, Constants.ch_velKd);
         moveMotor.config_kI(0, Constants.ch_velKi);
