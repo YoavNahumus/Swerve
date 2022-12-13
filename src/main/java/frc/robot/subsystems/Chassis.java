@@ -64,7 +64,7 @@ public class Chassis extends SubsystemBase {
     public void setVelocities(double vx, double vy, double omega) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, getRotation());
         SwerveModuleState[] states = SwerveConstants.KINEMATICS.toSwerveModuleStates(speeds);
-        setModuleStates(states);        
+        setModuleStates(states);
     }
 
     /**
