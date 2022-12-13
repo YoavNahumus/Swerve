@@ -4,6 +4,7 @@ package frc.robot.utils;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
@@ -38,6 +39,8 @@ public class SwerveModule implements Sendable {
 
         angleMotor.config_kP(0, SwerveModuleConstants.ANGLE_KP);
         angleMotor.config_kI(0, SwerveModuleConstants.ANGLE_KI);
+        angleMotor.setNeutralMode(NeutralMode.Brake);
+        moveMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     /**
@@ -122,11 +125,20 @@ public class SwerveModule implements Sendable {
         setAngle(state.angle.getDegrees());
     }
 
+    /**
+     * Sets the power of the velocity motor
+     * @param power The power to set the velocity motor to
+     */
+    public void setVelocityPower(double power) {
+        moveMotor.set(ControlMode.PercentOutput, power);
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Velocity", this::getVelocity, null);
         builder.addDoubleProperty("Angle", this::getAngle, null);
         builder.addDoubleProperty("Angle Error", angleMotor::getClosedLoopError, null);
         builder.addDoubleProperty("Velocity Error", moveMotor::getClosedLoopError, null);
+        builder.addDoubleProperty("Velocity Pulese", moveMotor::getSelectedSensorPosition, null);
     }
 }
