@@ -24,7 +24,7 @@ public final class Constants {
         public final int absoluteEncoderID;
 
 
-        public static final double VELOCITY_KP = -1;
+        public static final double VELOCITY_KP = 0.1;
         public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(-1, -1);
         public static final double ANGLE_KP = 0.2;
         public static final double ANGLE_KI = 0.002;
