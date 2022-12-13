@@ -99,6 +99,16 @@ public class Chassis extends SubsystemBase {
         return odometry.getPoseMeters();
     }
 
+    /**
+     * Stops all motors
+     */
+    public void stop() {
+        for (SwerveModule module : modules) {
+            module.stopAngleMotor();
+            module.stopMoveMotor();
+        }
+    }
+
     @Override
     public void periodic() {
         odometry.update(getRotation(), getModuleStates());

@@ -31,7 +31,7 @@ public final class Constants {
 
         public static final double PPR_FALCON = 2048;
         public static final double WHEEL_PERIMITER = 0.1016; // meters
-        public static final double GEAR_RATIO_VEL = -1;
+        public static final double GEAR_RATIO_VEL = 1. / 8.14;
         public static final double PULSE_PER_METER = PPR_FALCON * GEAR_RATIO_VEL / WHEEL_PERIMITER;
 
         public static final double GEAR_RATIO_ANGLE = 12.8;
@@ -61,5 +61,6 @@ public final class Constants {
         public static final int GYRO_ID = 14;
         
         public static final double MAX_SPEED = 3.5; // meters per second
+        public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
     }
 }

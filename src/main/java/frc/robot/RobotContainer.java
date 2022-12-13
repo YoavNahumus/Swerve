@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.DriveVelocities;
 import frc.robot.subsystems.Chassis;
 
 /**
@@ -19,12 +20,14 @@ import frc.robot.subsystems.Chassis;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final XboxController controller = new XboxController(0);
   private final Chassis chassis;
   private static RobotContainer instance;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private RobotContainer() {
     chassis = new Chassis();
+    chassis.setDefaultCommand(new DriveVelocities(chassis, controller));
 
     configureButtonBindings();
   }

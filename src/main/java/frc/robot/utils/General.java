@@ -26,4 +26,26 @@ public final class General {
     public static double normalizeAngle(double angle) {
         return ((angle % 360) + 360) % 360;
     }
+
+    /**
+     * Limits a value to be at least greater than 0.1 or less than -0.1
+     * @param value The value to limit
+     * @return The limited value
+     */
+    public static double deadband(double value) {
+        if (Math.abs(value) < 0.1) {
+            return 0;
+        }
+        return value;
+    }
+
+    /**
+     * Scale a value by a power
+     * @param value The value to scale
+     * @param scale The power to scale by
+     * @return The scaled value
+     */
+    public static double scale(double value, double scale) {
+        return Math.pow(Math.abs(value), scale) * Math.signum(value);
+    }
 }
