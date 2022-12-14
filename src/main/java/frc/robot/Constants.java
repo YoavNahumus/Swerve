@@ -24,18 +24,18 @@ public final class Constants {
         public final int absoluteEncoderID;
 
 
-        public static final double VELOCITY_KP = 0.1;
-        public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(0.0317, 0.243);
-        public static final double ANGLE_KP = 0.2;
-        public static final double ANGLE_KI = 0.001;
-
         public static final double PPR_FALCON = 2048;
         public static final double WHEEL_PERIMITER = 0.1016 * Math.PI; // meters
         public static final double GEAR_RATIO_VEL = 8.14;
         public static final double PULSE_PER_METER = PPR_FALCON * GEAR_RATIO_VEL / WHEEL_PERIMITER;
-
+        
         public static final double GEAR_RATIO_ANGLE = 12.8;
         public static final double PULSE_PER_DEGREE = PPR_FALCON * GEAR_RATIO_ANGLE / 360;
+        
+        public static final double VELOCITY_KP = 0.1;
+        public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(0.0317, 0.243);
+        public static final double ANGLE_KP = 0.2 * PULSE_PER_DEGREE;
+        public static final double ANGLE_KI = 0.001 * PULSE_PER_DEGREE;
 
         private SwerveModuleConstants(double angleOffset, int moveMotorID, int angleMotorID, int absoluteEncoderID) {
             this.angleOffset = angleOffset;

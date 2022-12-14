@@ -4,6 +4,7 @@ package frc.robot.utils;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -41,6 +42,11 @@ public class SwerveModule implements Sendable {
         angleMotor.config_kI(0, SwerveModuleConstants.ANGLE_KI);
         angleMotor.setNeutralMode(NeutralMode.Brake);
         moveMotor.setNeutralMode(NeutralMode.Brake);
+
+        angleMotor.configRemoteFeedbackFilter(absoluteEncoder, 0);
+        angleMotor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 0, 0);
+
+        absoluteEncoder.configMagnetOffset(angleOffset);
     }
 
     /**
@@ -48,7 +54,7 @@ public class SwerveModule implements Sendable {
      * @return The angle of the module, between 0 and 360 degrees
      */
     public double getAngle() {
-        return General.normalizeAngle(absoluteEncoder.getAbsolutePosition() - angleOffset);
+        return absoluteEncoder.getAbsolutePosition();
     }
 
     /**
@@ -77,13 +83,13 @@ public class SwerveModule implements Sendable {
     }
 
     /**
-     * Calculates the target angle for the module
-     * @param targetAngle The target angle, in degrees
-     * @return The target angle, in encoder pulses
+     * Calculates the target angle for the module to move to, based on the current angle
+     * @param angle The angle to move to, in degrees
+     * @return The target angle for the module to move to, in degrees
      */
-    public double calculateTarget(double targetAngle) {
-        double difference = General.getAngleDifference(getAngle(), targetAngle);
-        return angleMotor.getSelectedSensorPosition() + (difference * SwerveModuleConstants.PULSE_PER_DEGREE);
+    public double calculateTarget(double angle) {
+        angle = General.normalizeAngle(angle);
+        return absoluteEncoder.getPosition() + General.getAngleDifference(getAngle(), angle);
     }
 
     /**
@@ -139,6 +145,6 @@ public class SwerveModule implements Sendable {
         builder.addDoubleProperty("Angle", this::getAngle, null);
         builder.addDoubleProperty("Angle Error", angleMotor::getClosedLoopError, null);
         builder.addDoubleProperty("Velocity Error", moveMotor::getClosedLoopError, null);
-        builder.addDoubleProperty("Velocity Pulese", moveMotor::getSelectedSensorPosition, null);
+        builder.addDoubleProperty("Velocity Pulse", moveMotor::getSelectedSensorPosition, null);
     }
 }
