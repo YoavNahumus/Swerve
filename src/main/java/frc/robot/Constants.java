@@ -25,7 +25,7 @@ public final class Constants {
 
 
         public static final double VELOCITY_KP = 0.1;
-        public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(0.0317, 0.243);
+        public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(0.05, 0.21819);
         public static final double ANGLE_KP = 0.2;
         public static final double ANGLE_KI = 0.001;
 
