@@ -25,7 +25,10 @@ public class DriveVelocities extends CommandBase {
         double vx = General.scale(General.deadband(controller.getLeftX()), 1.5) * SwerveConstants.MAX_SPEED;
         double vy = General.scale(General.deadband(-controller.getLeftY()), 1.5) * SwerveConstants.MAX_SPEED;
         double omega = General.scale(General.deadband(controller.getLeftTriggerAxis() - controller.getRightTriggerAxis()), 1.5) * SwerveConstants.MAX_ANGULAR_SPEED;
-        chassis.setVelocities(vx, vy, omega);
+        if (vx == 0 && vy == 0 && omega == 0)
+            chassis.stop();
+        else
+            chassis.setVelocities(vx, vy, omega);
     }
 
     // Called once the command ends or is interrupted.
