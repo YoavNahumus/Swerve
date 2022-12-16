@@ -41,8 +41,6 @@ public class SwerveModule implements Sendable {
         angleMotor.config_kI(0, SwerveModuleConstants.ANGLE_KI);
         angleMotor.setNeutralMode(NeutralMode.Brake);
         moveMotor.setNeutralMode(NeutralMode.Brake);
-
-        absoluteEncoder.configMagnetOffset(angleOffset);
     }
 
     /**
@@ -50,7 +48,7 @@ public class SwerveModule implements Sendable {
      * @return The angle of the module, between 0 and 360 degrees
      */
     public double getAngle() {
-        return absoluteEncoder.getAbsolutePosition();
+        return General.normalizeAngle(absoluteEncoder.getAbsolutePosition() - angleOffset);
     }
 
     /**
