@@ -27,7 +27,7 @@ public final class Constants {
         public static final double VELOCITY_KP = 0.1;
         public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(0.05, 0.21819);
         public static final double ANGLE_KP = 0.2;
-        public static final double ANGLE_KI = 0.001;
+        public static final double ANGLE_KI = 0.0013;
 
         public static final double PPR_FALCON = 2048;
         public static final double WHEEL_PERIMITER = 0.1016 * Math.PI; // meters
@@ -44,18 +44,18 @@ public final class Constants {
             this.absoluteEncoderID = absoluteEncoderID;
         }
 
-        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(326.25, 7, 8, 11);
-        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(119.35546875, 5, 6, 13);
-        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(45.3515625, 1, 2, 10);
-        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(289.423828125, 3, 4, 12);
+        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(275.097, 7, 8, 11);
+        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(296.982, 5, 6, 13);
+        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(225.263, 1, 2, 10);
+        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(109.335, 3, 4, 12);
     }
 
     public static final class SwerveConstants {
         public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
-                new Translation2d(-0.262, 0.307), // front left
-                new Translation2d(0.262, 0.307), // front right
-                new Translation2d(-0.262, -0.307), // back left
-                new Translation2d(0.262, -0.307) // back right
+                new Translation2d(0.262, 0.307), // front left
+                new Translation2d(0.262, -0.307), // front right
+                new Translation2d(-0.262, 0.307), // back left
+                new Translation2d(-0.262, -0.307) // back right
         );
 
         public static final int GYRO_ID = 14;

@@ -33,7 +33,7 @@ public final class General {
      * @return The limited value
      */
     public static double deadband(double value) {
-        if (Math.abs(value) < 0.1) {
+        if (Math.abs(value) < 0.15) {
             return 0;
         }
         return value;

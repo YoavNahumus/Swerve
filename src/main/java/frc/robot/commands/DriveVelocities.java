@@ -22,8 +22,8 @@ public class DriveVelocities extends CommandBase {
 
     @Override
     public void execute() {
-        double vx = General.scale(General.deadband(controller.getLeftX()), 1.5) * SwerveConstants.MAX_SPEED;
-        double vy = General.scale(General.deadband(-controller.getLeftY()), 1.5) * SwerveConstants.MAX_SPEED;
+        double vx = General.scale(General.deadband(-controller.getLeftX()), 1.5) * SwerveConstants.MAX_SPEED;
+        double vy = General.scale(General.deadband(controller.getLeftY()), 1.5) * SwerveConstants.MAX_SPEED;
         double omega = General.scale(General.deadband(controller.getLeftTriggerAxis() - controller.getRightTriggerAxis()), 1.5) * SwerveConstants.MAX_ANGULAR_SPEED;
         if (vx == 0 && vy == 0 && omega == 0)
             chassis.stop();
