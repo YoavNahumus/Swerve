@@ -133,6 +133,11 @@ public class SwerveModule implements Sendable {
         moveMotor.set(ControlMode.PercentOutput, power);
     }
 
+    public void setNeutralMode(boolean isBreak) {
+        angleMotor.setNeutralMode(isBreak ? NeutralMode.Brake : NeutralMode.Coast);
+        moveMotor.setNeutralMode(isBreak ? NeutralMode.Brake : NeutralMode.Coast);
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Velocity", this::getVelocity, null);

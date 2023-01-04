@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
@@ -26,6 +27,7 @@ public class Chassis extends SubsystemBase {
     private final SwerveModule[] modules;
     private final PigeonIMU gyro;
     private final SwerveDriveOdometry odometry;
+    private boolean isBreak;
 
     public Chassis() {
         field = new Field2d();
@@ -36,7 +38,8 @@ public class Chassis extends SubsystemBase {
             new SwerveModule(SwerveModuleConstants.BACK_LEFT),
             new SwerveModule(SwerveModuleConstants.BACK_RIGHT)
         };
-        odometry = new SwerveDriveOdometry(SwerveConstants.KINEMATICS, getRotation());
+        odometry = new SwerveDriveOdometry(SwerveConstants.KINEMATICS, new Rotation2d());
+        isBreak = true;
     }
 
     /**
@@ -51,8 +54,12 @@ public class Chassis extends SubsystemBase {
      * Gets the rotation of the robot
      * @return The rotation of the robot
      */
-    public Rotation2d getRotation() {
+    public Rotation2d getGyroRotation() {
         return Rotation2d.fromDegrees(getAngle());
+    }
+
+    public Rotation2d getRotation() {
+        return odometry.getPoseMeters().getRotation();
     }
 
     /**
@@ -109,9 +116,22 @@ public class Chassis extends SubsystemBase {
         }
     }
 
+    public void swapNeutralMode() {
+        isBreak = !isBreak;
+        for (var module: modules) {
+            module.setNeutralMode(isBreak);
+        }
+    }
+
+    public void resetAngle() {
+        gyro.setYaw(0);
+        odometry.resetPosition(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d()),
+            getGyroRotation());
+    }
+
     @Override
     public void periodic() {
-        odometry.update(getRotation(), getModuleStates());
+        odometry.update(getGyroRotation(), getModuleStates());
         field.setRobotPose(getPose());
     }
 
@@ -125,5 +145,19 @@ public class Chassis extends SubsystemBase {
         SmartDashboard.putData("Field", field);
 
         builder.addDoubleProperty("Angle", this::getAngle, null);
+
+        SmartDashboard.putData("Change Neutral", new InstantCommand(this::swapNeutralMode) {
+            @Override
+            public boolean runsWhenDisabled() {
+                return true;
+            }
+        });
+
+        SmartDashboard.putData("Zero Angle", new InstantCommand(this::resetAngle) {
+            @Override
+            public boolean runsWhenDisabled() {
+                return true;
+            }
+        });
     }
 }
