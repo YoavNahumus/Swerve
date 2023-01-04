@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
@@ -18,12 +19,14 @@ public class SwerveModule implements Sendable {
     private final double angleOffset;
     private final TalonFX moveMotor, angleMotor;
     private final CANCoder absoluteEncoder;
+    private final SimpleMotorFeedforward feedforward;
 
     public SwerveModule(SwerveModuleConstants constants) {
         angleOffset = constants.angleOffset;
         moveMotor = new TalonFX(constants.moveMotorID);
         angleMotor = new TalonFX(constants.angleMotorID);
         absoluteEncoder = new CANCoder(constants.absoluteEncoderID);
+        feedforward = new SimpleMotorFeedforward(constants.kS, constants.kV);
         configureDevices();
     }
 
@@ -73,7 +76,7 @@ public class SwerveModule implements Sendable {
      */
     public void setVelocity(double velocity) {
         moveMotor.set(ControlMode.Velocity, velocity * SwerveModuleConstants.PULSE_PER_METER / 10,
-                DemandType.ArbitraryFeedForward, SwerveModuleConstants.VELOCITY_FF.calculate(velocity));
+                DemandType.ArbitraryFeedForward, feedforward.calculate(velocity));
     }
 
     /**

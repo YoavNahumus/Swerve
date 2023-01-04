@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
@@ -18,14 +17,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  */
 public final class Constants {
     public static class SwerveModuleConstants {
-        public final double angleOffset;
-        public final int moveMotorID;
-        public final int angleMotorID;
-        public final int absoluteEncoderID;
+        public final double kS, kV, angleOffset;
+        public final int moveMotorID, angleMotorID, absoluteEncoderID;
 
 
         public static final double VELOCITY_KP = 0.1;
-        public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(0.05, 0.21819);
         public static final double ANGLE_KP = 0.2;
         public static final double ANGLE_KI = 0.0013;
 
@@ -37,17 +33,19 @@ public final class Constants {
         public static final double GEAR_RATIO_ANGLE = 12.8;
         public static final double PULSE_PER_DEGREE = PPR_FALCON * GEAR_RATIO_ANGLE / 360;
 
-        private SwerveModuleConstants(double angleOffset, int moveMotorID, int angleMotorID, int absoluteEncoderID) {
+        private SwerveModuleConstants(double angleOffset, int moveMotorID, int angleMotorID, int absoluteEncoderID, double kS, double kV) {
             this.angleOffset = angleOffset;
             this.moveMotorID = moveMotorID;
             this.angleMotorID = angleMotorID;
             this.absoluteEncoderID = absoluteEncoderID;
+            this.kS = kS;
+            this.kV = kV;
         }
 
-        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(303.31, 7, 8, 11);
-        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(312.18, 5, 6, 13);
-        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(228.69, 1, 2, 10);
-        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(108.8, 3, 4, 12);
+        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(303.31, 7, 8, 11, 0.05, 0.21819);
+        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(312.18, 5, 6, 13, 0.05, 0.21819);
+        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(228.69, 1, 2, 10, 0.05, 0.21819);
+        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(108.8, 3, 4, 12, 0.05, 0.21819);
     }
 
     public static final class SwerveConstants {
