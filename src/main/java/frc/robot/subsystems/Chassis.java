@@ -15,10 +15,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
+import frc.robot.commands.templates.InstantCommandInDisable;
 import frc.robot.utils.General;
 import frc.robot.utils.SwerveModule;
 
@@ -116,6 +116,9 @@ public class Chassis extends SubsystemBase {
         }
     }
 
+    /**
+     * Swaps the neutral mode of the modules, between brake and coast
+     */
     public void swapNeutralMode() {
         isBreak = !isBreak;
         for (var module: modules) {
@@ -123,8 +126,12 @@ public class Chassis extends SubsystemBase {
         }
     }
 
+    /**
+     * Resets the angle of the robot, so the forward of the robot is the same as the forward of the field
+     */
     public void resetAngle() {
         gyro.setYaw(0);
+        gyro.setFusedHeading(0);
         odometry.resetPosition(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d()),
             getGyroRotation());
     }
@@ -146,18 +153,8 @@ public class Chassis extends SubsystemBase {
 
         builder.addDoubleProperty("Angle", this::getAngle, null);
 
-        SmartDashboard.putData("Change Neutral", new InstantCommand(this::swapNeutralMode) {
-            @Override
-            public boolean runsWhenDisabled() {
-                return true;
-            }
-        });
+        SmartDashboard.putData("Change Neutral", new InstantCommandInDisable(this::swapNeutralMode));
 
-        SmartDashboard.putData("Zero Angle", new InstantCommand(this::resetAngle) {
-            @Override
-            public boolean runsWhenDisabled() {
-                return true;
-            }
-        });
+        SmartDashboard.putData("Zero Angle", new InstantCommandInDisable(this::resetAngle));
     }
 }
