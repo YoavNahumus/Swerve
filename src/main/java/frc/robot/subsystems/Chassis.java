@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -144,10 +145,15 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        SmartDashboard.putData("Front Left Module", modules[0]);
-        SmartDashboard.putData("Front Right Module", modules[1]);
-        SmartDashboard.putData("Back Left Module", modules[2]);
-        SmartDashboard.putData("Back Right Module", modules[3]);
+        SendableRegistry.setName(modules[0], "Front Left Module");
+        SendableRegistry.setName(modules[1], "Front Right Module");
+        SendableRegistry.setName(modules[2], "Back Left Module");
+        SendableRegistry.setName(modules[3], "Back Right Module");
+
+        SmartDashboard.putData(modules[0]);
+        SmartDashboard.putData(modules[1]);
+        SmartDashboard.putData(modules[2]);
+        SmartDashboard.putData(modules[3]);
 
         SmartDashboard.putData("Field", field);
 
@@ -156,5 +162,11 @@ public class Chassis extends SubsystemBase {
         SmartDashboard.putData("Change Neutral", new InstantCommandInDisable(this::swapNeutralMode));
 
         SmartDashboard.putData("Zero Angle", new InstantCommandInDisable(this::resetAngle));
+
+        SmartDashboard.putData("Calibrate Offsets", new InstantCommandInDisable(() -> {
+            for (var module: modules) {
+                module.calibrateOffset();
+            }
+        }));
     }
 }

@@ -12,10 +12,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import frc.robot.Constants.SwerveModuleConstants;
 
 public class SwerveModule implements Sendable {
-    private final double angleOffset;
+    private double angleOffset;
     private final TalonFX moveMotor, angleMotor;
     private final CANCoder absoluteEncoder;
 
@@ -133,9 +134,21 @@ public class SwerveModule implements Sendable {
         moveMotor.set(ControlMode.PercentOutput, power);
     }
 
+    /**
+     * Sets the neutral mode of the module
+     * @param isBreak Whether the module should be in brake mode or in coast mode
+     */
     public void setNeutralMode(boolean isBreak) {
         angleMotor.setNeutralMode(isBreak ? NeutralMode.Brake : NeutralMode.Coast);
         moveMotor.setNeutralMode(isBreak ? NeutralMode.Brake : NeutralMode.Coast);
+    }
+
+    /**
+     * Sets the offset of the module to the current angle
+     */
+    public void calibrateOffset() {
+        angleOffset = absoluteEncoder.getAbsolutePosition();
+        System.out.println("Offset " + SendableRegistry.getName(this) + ": " + angleOffset);
     }
 
     @Override
@@ -144,6 +157,6 @@ public class SwerveModule implements Sendable {
         builder.addDoubleProperty("Angle", this::getAngle, null);
         builder.addDoubleProperty("Angle Error", angleMotor::getClosedLoopError, null);
         builder.addDoubleProperty("Velocity Error", moveMotor::getClosedLoopError, null);
-        builder.addDoubleProperty("Velocity Pulese", moveMotor::getSelectedSensorPosition, null);
+        builder.addDoubleProperty("Angle Offset", () -> angleOffset, null);
     }
 }
