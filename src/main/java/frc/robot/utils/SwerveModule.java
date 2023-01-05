@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import frc.robot.Constants.SwerveModuleConstants;
 
 public class SwerveModule implements Sendable {
@@ -151,7 +150,7 @@ public class SwerveModule implements Sendable {
      */
     public void calibrateOffset() {
         angleOffset = absoluteEncoder.getAbsolutePosition();
-        System.out.println("Offset " + SendableRegistry.getName(this) + ": " + angleOffset);
+        System.out.println("Offset: " + angleOffset);
     }
 
     @Override
