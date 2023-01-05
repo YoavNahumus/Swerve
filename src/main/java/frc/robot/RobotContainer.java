@@ -47,7 +47,7 @@ public class RobotContainer {
      * or {@link XboxController}), and then passing it to a {@link JoystickButton}.
      */
     private void configureButtonBindings() {
-        aButton.whenHeld(new StartEndCommand(
+        aButton.whileTrue(new StartEndCommand(
             () -> chassis.setVelocities(1, 0, 0),
             chassis::stop,
             chassis

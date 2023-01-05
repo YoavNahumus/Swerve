@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -148,6 +149,22 @@ public class SwerveModule implements Sendable {
     public void calibrateOffset() {
         angleOffset = absoluteEncoder.getAbsolutePosition();
         System.out.println("Offset: " + angleOffset);
+    }
+
+    /**
+     * Gets the distance the module has traveled, in meters
+     * @return The distance the module has traveled, in meters
+     */
+    public double getDistance() {
+        return moveMotor.getSelectedSensorPosition() / SwerveModuleConstants.PULSE_PER_METER;
+    }
+
+    /**
+     * Gets the position of the module
+     * @return The position of the module
+     */
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(getDistance(), getAngleRotation());
     }
 
     @Override
