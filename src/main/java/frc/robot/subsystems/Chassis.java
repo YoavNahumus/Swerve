@@ -8,11 +8,11 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -29,7 +29,7 @@ public class Chassis extends SubsystemBase {
     private final Field2d field;
     private final SwerveModule[] modules;
     private final PigeonIMU gyro;
-    private final SwerveDriveOdometry odometry;
+    private final SwerveDrivePoseEstimator poseEstimator;
     private boolean isBreak;
 
     public Chassis() {
@@ -41,7 +41,7 @@ public class Chassis extends SubsystemBase {
             new SwerveModule(SwerveModuleConstants.BACK_LEFT),
             new SwerveModule(SwerveModuleConstants.BACK_RIGHT)
         };
-        odometry = new SwerveDriveOdometry(SwerveConstants.KINEMATICS, new Rotation2d(), getModulePositions());
+        poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.KINEMATICS, getGyroRotation(), getModulePositions(), new Pose2d(0, 0, getGyroRotation()));
         isBreak = true;
     }
 
@@ -62,7 +62,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public Rotation2d getRotation() {
-        return odometry.getPoseMeters().getRotation();
+        return poseEstimator.getEstimatedPosition().getRotation();
     }
 
     /**
@@ -106,7 +106,7 @@ public class Chassis extends SubsystemBase {
      * @return The pose of the robot
      */
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
     }
 
     /**
@@ -135,7 +135,7 @@ public class Chassis extends SubsystemBase {
     public void resetAngle() {
         gyro.setYaw(0);
         gyro.setFusedHeading(0);
-        odometry.resetPosition(getGyroRotation(), getModulePositions(), new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d()));
+        poseEstimator.resetPosition(getGyroRotation(), getModulePositions(), new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), new Rotation2d()));
     }
 
     /**
@@ -148,7 +148,7 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void periodic() {
-        odometry.update(getGyroRotation(), getModulePositions());
+        poseEstimator.update(getGyroRotation(), getModulePositions());
         field.setRobotPose(getPose());
     }
 
