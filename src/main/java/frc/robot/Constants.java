@@ -42,10 +42,10 @@ public final class Constants {
             this.kV = kV;
         }
 
-        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(303.31, 7, 8, 11, 0.05, 0.21819);
-        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(312.18, 5, 6, 13, 0.05, 0.21819);
-        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(228.69, 1, 2, 10, 0.05, 0.21819);
-        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(108.8, 3, 4, 12, 0.05, 0.21819);
+        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(303.31, 7, 8, 11, 0.0479, 0.22185);
+        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(312.18, 5, 6, 13, 0.0479, 0.22185);
+        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(228.69, 1, 2, 10, 0.0479, 0.22185);
+        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(108.8, 3, 4, 12, 0.0479, 0.22185);
     }
 
     public static final class SwerveConstants {
@@ -58,7 +58,7 @@ public final class Constants {
 
         public static final int GYRO_ID = 14;
         
-        public static final double MAX_SPEED = 4.35; // meters per second
+        public static final double MAX_SPEED = 4.25; // meters per second
         public static final double MAX_DRIVE_SPEED = 3.5;
         public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
     }
