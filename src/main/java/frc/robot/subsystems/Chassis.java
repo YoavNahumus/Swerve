@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -38,7 +41,7 @@ public class Chassis extends SubsystemBase {
             new SwerveModule(SwerveModuleConstants.BACK_LEFT),
             new SwerveModule(SwerveModuleConstants.BACK_RIGHT)
         };
-        odometry = new SwerveDriveOdometry(SwerveConstants.KINEMATICS, new Rotation2d());
+        odometry = new SwerveDriveOdometry(SwerveConstants.KINEMATICS, new Rotation2d(), getModulePositions());
         isBreak = true;
     }
 
@@ -132,13 +135,20 @@ public class Chassis extends SubsystemBase {
     public void resetAngle() {
         gyro.setYaw(0);
         gyro.setFusedHeading(0);
-        odometry.resetPosition(new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d()),
-            getGyroRotation());
+        odometry.resetPosition(getGyroRotation(), getModulePositions(), new Pose2d(odometry.getPoseMeters().getTranslation(), new Rotation2d()));
+    }
+
+    /**
+     * Gets the positions of the modules
+     * @return The positions of the modules, in order of front left, front right, back left, back right
+     */
+    public SwerveModulePosition[] getModulePositions() {
+        return Arrays.stream(modules).map((module) -> module.getPosition()).toArray(SwerveModulePosition[]::new);
     }
 
     @Override
     public void periodic() {
-        odometry.update(getGyroRotation(), getModuleStates());
+        odometry.update(getGyroRotation(), getModulePositions());
         field.setRobotPose(getPose());
     }
 
