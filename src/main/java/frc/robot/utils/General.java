@@ -2,7 +2,9 @@ package frc.robot.utils;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.XboxController;
 
 public final class General {
     /**
@@ -74,5 +76,17 @@ public final class General {
      */
     public static void addDoubleProperty(SendableBuilder builder, String name, DoubleSupplier supplier, int placesAfterDecimal) {
         builder.addStringProperty(name, () -> round(supplier.getAsDouble(), placesAfterDecimal), null);
+    }
+
+    /**
+     * Gets the scaled x and y values from an XboxController
+     * @param controller The XboxController to get the values from
+     * @param scale The scale to scale by
+     * @return The scaled x and y values
+     */
+    public static Translation2d getScaledXY(XboxController controller, double scale) {
+        Translation2d translation = new Translation2d(controller.getLeftX(), controller.getLeftY());
+        translation = translation.times(Math.pow(translation.getNorm(), scale - 1));
+        return translation;
     }
 }

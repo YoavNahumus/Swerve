@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveConstants;
@@ -22,8 +23,9 @@ public class DriveVelocities extends CommandBase {
 
     @Override
     public void execute() {
-        double vx = General.scale(General.deadband(-controller.getLeftY()), 2) * SwerveConstants.MAX_DRIVE_SPEED;
-        double vy = General.scale(General.deadband(-controller.getLeftX()), 2) * SwerveConstants.MAX_DRIVE_SPEED;
+        Translation2d xy = General.getScaledXY(controller, 2);
+        double vx = -xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
+        double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
         double omega = General.scale(General.deadband(controller.getLeftTriggerAxis() - controller.getRightTriggerAxis()), 2) * SwerveConstants.MAX_ANGULAR_SPEED;
         if (vx == 0 && vy == 0 && omega == 0)
             chassis.stop();

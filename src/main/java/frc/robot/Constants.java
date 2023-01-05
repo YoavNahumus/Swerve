@@ -25,7 +25,9 @@ public final class Constants {
 
 
         public static final double VELOCITY_KP = 0.1;
-        public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(0.05, 0.21819);
+        public static final double VELOCITY_KS = 0.0479;
+        public static final double VELOCITY_KV = 0.22185;
+        public static final SimpleMotorFeedforward VELOCITY_FF = new SimpleMotorFeedforward(VELOCITY_KS, VELOCITY_KV);
         public static final double ANGLE_KP = 0.2;
         public static final double ANGLE_KI = 0.0013;
 
@@ -60,7 +62,7 @@ public final class Constants {
 
         public static final int GYRO_ID = 14;
         
-        public static final double MAX_SPEED = 4.35; // meters per second
+        public static final double MAX_SPEED = (1 - SwerveModuleConstants.VELOCITY_KS) / SwerveModuleConstants.VELOCITY_KV; // meters per second
         public static final double MAX_DRIVE_SPEED = 3.5;
         public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
     }
