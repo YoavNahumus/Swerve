@@ -46,6 +46,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Gets the angle of the module, accounting for the offset
+     * 
      * @return The angle of the module, between 0 and 360 degrees
      */
     public double getAngle() {
@@ -54,6 +55,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Gets the angle of the module as a Rotation2d
+     * 
      * @return The angle of the module as a Rotation2d
      */
     public Rotation2d getAngleRotation() {
@@ -62,6 +64,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Gets the velocity of the module
+     * 
      * @return The velocity of the module, in meters per second
      */
     public double getVelocity() {
@@ -70,6 +73,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Sets the velocity of the module
+     * 
      * @param velocity The velocity to set the module to, in meters per second
      */
     public void setVelocity(double velocity) {
@@ -79,6 +83,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Calculates the target angle for the module
+     * 
      * @param targetAngle The target angle, in degrees
      * @return The target angle, in encoder pulses
      */
@@ -89,6 +94,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Sets the angle of the module
+     * 
      * @param angle The angle to set the module to, in degrees
      */
     public void setAngle(double angle) {
@@ -111,6 +117,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Gets the state of the module
+     * 
      * @return The state of the module
      */
     public SwerveModuleState getState() {
@@ -119,6 +126,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Sets the state of the module
+     * 
      * @param state The state to set the module to
      */
     public void setState(SwerveModuleState state) {
@@ -128,6 +136,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Sets the power of the velocity motor
+     * 
      * @param power The power to set the velocity motor to
      */
     public void setVelocityPower(double power) {
@@ -136,6 +145,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Sets the neutral mode of the module
+     * 
      * @param isBreak Whether the module should be in brake mode or in coast mode
      */
     public void setNeutralMode(boolean isBreak) {
@@ -153,6 +163,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Gets the distance the module has traveled, in meters
+     * 
      * @return The distance the module has traveled, in meters
      */
     public double getDistance() {
@@ -161,6 +172,7 @@ public class SwerveModule implements Sendable {
 
     /**
      * Gets the position of the module
+     * 
      * @return The position of the module
      */
     public SwerveModulePosition getPosition() {

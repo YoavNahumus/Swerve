@@ -9,11 +9,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -22,7 +26,6 @@ public final class Constants {
         public final int moveMotorID;
         public final int angleMotorID;
         public final int absoluteEncoderID;
-
 
         public static final double VELOCITY_KP = 0.1;
         public static final double VELOCITY_KS = 0.0479;
@@ -61,8 +64,9 @@ public final class Constants {
         );
 
         public static final int GYRO_ID = 14;
-        
-        public static final double MAX_SPEED = (1 - SwerveModuleConstants.VELOCITY_KS) / SwerveModuleConstants.VELOCITY_KV; // meters per second
+
+        public static final double MAX_SPEED = (1 - SwerveModuleConstants.VELOCITY_KS)
+                / SwerveModuleConstants.VELOCITY_KV; // meters per second
         public static final double MAX_DRIVE_SPEED = 3.5;
         public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
     }

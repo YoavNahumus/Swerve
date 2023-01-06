@@ -36,17 +36,19 @@ public class Chassis extends SubsystemBase {
         field = new Field2d();
         gyro = new PigeonIMU(SwerveConstants.GYRO_ID);
         modules = new SwerveModule[] {
-            new SwerveModule(SwerveModuleConstants.FRONT_LEFT),
-            new SwerveModule(SwerveModuleConstants.FRONT_RIGHT),
-            new SwerveModule(SwerveModuleConstants.BACK_LEFT),
-            new SwerveModule(SwerveModuleConstants.BACK_RIGHT)
+                new SwerveModule(SwerveModuleConstants.FRONT_LEFT),
+                new SwerveModule(SwerveModuleConstants.FRONT_RIGHT),
+                new SwerveModule(SwerveModuleConstants.BACK_LEFT),
+                new SwerveModule(SwerveModuleConstants.BACK_RIGHT)
         };
-        poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.KINEMATICS, getGyroRotation(), getModulePositions(), new Pose2d(0, 0, getGyroRotation()));
+        poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.KINEMATICS, getGyroRotation(),
+                getModulePositions(), new Pose2d(0, 0, getGyroRotation()));
         isBreak = true;
     }
 
     /**
      * Gets the angle of the robot
+     * 
      * @return The angle of the robot, between 0 and 360 degrees
      */
     public double getAngle() {
@@ -55,6 +57,7 @@ public class Chassis extends SubsystemBase {
 
     /**
      * Gets the rotation of the robot
+     * 
      * @return The rotation of the robot
      */
     public Rotation2d getGyroRotation() {
@@ -67,8 +70,9 @@ public class Chassis extends SubsystemBase {
 
     /**
      * Sets the velocities of the robot
-     * @param vx The x velocity, in meters per second
-     * @param vy The y velocity, in meters per second
+     * 
+     * @param vx    The x velocity, in meters per second
+     * @param vy    The y velocity, in meters per second
      * @param omega The angular velocity, in radians per second
      */
     public void setVelocities(double vx, double vy, double omega) {
@@ -79,7 +83,9 @@ public class Chassis extends SubsystemBase {
 
     /**
      * Sets the states of the modules
-     * @param states The states of the modules, in order of front left, front right, back left, back right
+     * 
+     * @param states The states of the modules, in order of front left, front right,
+     *               back left, back right
      */
     public void setModuleStates(SwerveModuleState[] states) {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_SPEED);
@@ -91,7 +97,9 @@ public class Chassis extends SubsystemBase {
 
     /**
      * Gets the states of the modules
-     * @return The states of the modules, in order of front left, front right, back left, back right
+     * 
+     * @return The states of the modules, in order of front left, front right, back
+     *         left, back right
      */
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
@@ -103,6 +111,7 @@ public class Chassis extends SubsystemBase {
 
     /**
      * Gets the pose of the robot
+     * 
      * @return The pose of the robot
      */
     public Pose2d getPose() {
@@ -124,23 +133,27 @@ public class Chassis extends SubsystemBase {
      */
     public void swapNeutralMode() {
         isBreak = !isBreak;
-        for (var module: modules) {
+        for (var module : modules) {
             module.setNeutralMode(isBreak);
         }
     }
 
     /**
-     * Resets the angle of the robot, so the forward of the robot is the same as the forward of the field
+     * Resets the angle of the robot, so the forward of the robot is the same as the
+     * forward of the field
      */
     public void resetAngle() {
         gyro.setYaw(0);
         gyro.setFusedHeading(0);
-        poseEstimator.resetPosition(getGyroRotation(), getModulePositions(), new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), new Rotation2d()));
+        poseEstimator.resetPosition(getGyroRotation(), getModulePositions(),
+                new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), new Rotation2d()));
     }
 
     /**
      * Gets the positions of the modules
-     * @return The positions of the modules, in order of front left, front right, back left, back right
+     * 
+     * @return The positions of the modules, in order of front left, front right,
+     *         back left, back right
      */
     public SwerveModulePosition[] getModulePositions() {
         return Arrays.stream(modules).map((module) -> module.getPosition()).toArray(SwerveModulePosition[]::new);
@@ -168,7 +181,7 @@ public class Chassis extends SubsystemBase {
         SmartDashboard.putData("Zero Angle", new InstantCommandInDisable(this::resetAngle));
 
         SmartDashboard.putData("Calibrate Offsets", new InstantCommandInDisable(() -> {
-            for (var module: modules) {
+            for (var module : modules) {
                 module.calibrateOffset();
             }
         }));
