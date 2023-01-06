@@ -14,9 +14,12 @@ import frc.robot.commands.DriveVelocities;
 import frc.robot.subsystems.Chassis;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -26,7 +29,9 @@ public class RobotContainer {
     private final Chassis chassis;
     private static RobotContainer instance;
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
     private RobotContainer() {
         chassis = new Chassis();
         chassis.setDefaultCommand(new DriveVelocities(chassis, controller));
@@ -42,16 +47,16 @@ public class RobotContainer {
     }
 
     /**
-     * Use this method to define your button->command mappings. Buttons can be created by
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link Joystick}
      * or {@link XboxController}), and then passing it to a {@link JoystickButton}.
      */
     private void configureButtonBindings() {
         aButton.whileTrue(new StartEndCommand(
-            () -> chassis.setVelocities(1, 0, 0),
-            chassis::stop,
-            chassis
-        ));
+                () -> chassis.setVelocities(1, 0, 0),
+                chassis::stop,
+                chassis));
     }
 
     /**
