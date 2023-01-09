@@ -5,8 +5,14 @@
 package frc.robot.subsystems;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,6 +24,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
@@ -157,6 +164,37 @@ public class Chassis extends SubsystemBase {
      */
     public SwerveModulePosition[] getModulePositions() {
         return Arrays.stream(modules).map((module) -> module.getPosition()).toArray(SwerveModulePosition[]::new);
+    }
+
+    /**
+     * Resets the pose of the robot
+     * @param pose The pose to reset to
+     */
+    public void resetPose(Pose2d pose) {
+        poseEstimator.resetPosition(getGyroRotation(), getModulePositions(), pose);
+    }
+
+    /**
+     * Creates a path following command
+     * 
+     * @param path The path to follow
+     * @param events The events to run on the markers in the path
+     * @return the path following command
+     */
+    public FollowPathWithEvents createPathFollowingCommand(String path, Map<String, Command> events) {
+        SwerveAutoBuilder builder = new SwerveAutoBuilder(
+                this::getPose,
+                this::resetPose,
+                SwerveConstants.KINEMATICS,
+                new PIDConstants(SwerveConstants.AUTO_TRANSLATION_KP, SwerveConstants.AUTO_TRANSLATION_KI, 0),
+                new PIDConstants(SwerveConstants.AUTO_ROTATION_KP, SwerveConstants.AUTO_ROTATION_KI, 0),
+                this::setModuleStates,
+                events,
+                this);
+
+        var trajectory = PathPlanner.loadPath(path, new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ANGULAR_SPEED));
+        Command command = builder.fullAuto(trajectory);
+        return new FollowPathWithEvents(command, trajectory.getMarkers(), events);
     }
 
     @Override

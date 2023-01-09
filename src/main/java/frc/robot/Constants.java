@@ -64,5 +64,10 @@ public final class Constants {
         public static final double MAX_SPEED = 4.25; // meters per second
         public static final double MAX_DRIVE_SPEED = 3.5;
         public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
+
+        public static final double AUTO_TRANSLATION_KP = -1;
+        public static final double AUTO_TRANSLATION_KI = -1;
+        public static final double AUTO_ROTATION_KP = -1;
+        public static final double AUTO_ROTATION_KI = -1;
     }
 }
