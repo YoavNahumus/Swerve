@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.XboxController;
@@ -32,8 +33,18 @@ public final class General {
      * @param angle The angle to normalize
      * @return The normalized angle
      */
-    public static double normalizeAngle(double angle) {
+    public static double normalizeDegrees(double angle) {
         return ((angle % 360) + 360) % 360;
+    }
+
+    /**
+     * Normalizes an angle to be between 0 and 2pi radians
+     * 
+     * @param angle The angle to normalize
+     * @return The normalized angle
+     */
+    public static double normalizeRadians(double angle) {
+        return Math.toRadians(normalizeDegrees(Math.toDegrees(angle)));
     }
 
     /**
@@ -94,8 +105,21 @@ public final class General {
      * @return The scaled x and y values
      */
     public static Translation2d getScaledXY(XboxController controller, double scale) {
-        Translation2d translation = new Translation2d(controller.getLeftX(), controller.getLeftY());
+        Translation2d translation = new Translation2d(deadband(controller.getLeftX()), deadband(controller.getLeftY()));
         translation = translation.times(Math.pow(translation.getNorm(), scale - 1));
         return translation;
+    }
+
+    /**
+     * Gets the rotation of the right stick on the controller
+     * 
+     * @param controller The controller to get the value from
+     * @return The rotation
+     */
+    public static Rotation2d getRotation(XboxController controller) {
+        double x = deadband(controller.getRightX());
+        double y = deadband(-controller.getRightY());
+        if (x == 0 && y == 0) return null;
+        return new Rotation2d(x, y);
     }
 }

@@ -49,10 +49,10 @@ public final class Constants {
             this.absoluteEncoderID = absoluteEncoderID;
         }
 
-        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(303.31, 7, 8, 11);
-        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(312.18, 5, 6, 13);
-        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(228.69, 1, 2, 10);
-        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(108.8, 3, 4, 12);
+        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(10.371, 7, 8, 11);
+        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(117.158, 5, 6, 13);
+        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(46.054, 1, 2, 10);
+        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(289.335, 3, 4, 12);
     }
 
     public static final class SwerveConstants {
@@ -72,7 +72,7 @@ public final class Constants {
 
         public static final double AUTO_TRANSLATION_KP = -1;
         public static final double AUTO_TRANSLATION_KI = -1;
-        public static final double AUTO_ROTATION_KP = -1;
-        public static final double AUTO_ROTATION_KI = -1;
+        public static final double AUTO_ROTATION_KP = 0.5;
+        public static final double AUTO_ROTATION_KI = 0;
     }
 }

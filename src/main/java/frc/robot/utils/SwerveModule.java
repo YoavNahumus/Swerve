@@ -50,7 +50,7 @@ public class SwerveModule implements Sendable {
      * @return The angle of the module, between 0 and 360 degrees
      */
     public double getAngle() {
-        return General.normalizeAngle(absoluteEncoder.getAbsolutePosition() - angleOffset);
+        return General.normalizeDegrees(absoluteEncoder.getAbsolutePosition() - angleOffset);
     }
 
     /**
@@ -87,7 +87,7 @@ public class SwerveModule implements Sendable {
      * @param targetAngle The target angle, in degrees
      * @return The target angle, in encoder pulses
      */
-    public double calculateTarget(double targetAngle) {
+    private double calculateTarget(double targetAngle) {
         double difference = General.getAngleDifference(getAngle(), targetAngle);
         return angleMotor.getSelectedSensorPosition() + (difference * SwerveModuleConstants.PULSE_PER_DEGREE);
     }
@@ -158,7 +158,6 @@ public class SwerveModule implements Sendable {
      */
     public void calibrateOffset() {
         angleOffset = absoluteEncoder.getAbsolutePosition();
-        System.out.println("Offset: " + angleOffset);
     }
 
     /**

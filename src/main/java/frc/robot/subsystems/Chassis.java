@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,6 +38,7 @@ public class Chassis extends SubsystemBase {
     private final SwerveModule[] modules;
     private final PigeonIMU gyro;
     private final SwerveDrivePoseEstimator poseEstimator;
+    private final PIDController angleController;
     private boolean isBreak;
 
     public Chassis() {
@@ -48,6 +50,9 @@ public class Chassis extends SubsystemBase {
                 new SwerveModule(SwerveModuleConstants.BACK_LEFT),
                 new SwerveModule(SwerveModuleConstants.BACK_RIGHT)
         };
+        angleController = new PIDController(SwerveConstants.AUTO_ROTATION_KP,
+                SwerveConstants.AUTO_ROTATION_KI, 0);
+        angleController.enableContinuousInput(0, 2 * Math.PI);
         poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.KINEMATICS, getGyroRotation(),
                 getModulePositions(), new Pose2d(0, 0, getGyroRotation()));
         isBreak = true;
@@ -59,7 +64,7 @@ public class Chassis extends SubsystemBase {
      * @return The angle of the robot, between 0 and 360 degrees
      */
     public double getAngle() {
-        return General.normalizeAngle(gyro.getFusedHeading());
+        return General.normalizeDegrees(gyro.getFusedHeading());
     }
 
     /**
@@ -89,12 +94,27 @@ public class Chassis extends SubsystemBase {
     }
 
     /**
+     * Sets the velocities and the angle of the robot
+     * 
+     * @param vx    The x velocity, in meters per second
+     * @param vy    The y velocity, in meters per second
+     * @param angle The angle of the robot, in radians
+     */
+    public void setAngleAndVelocity(double vx, double vy, double angle) {
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy,
+                angleController.calculate(General.normalizeRadians(getRotation().getRadians()),
+                General.normalizeRadians(angle)), getRotation());
+        SwerveModuleState[] states = SwerveConstants.KINEMATICS.toSwerveModuleStates(speeds);
+        setModuleStates(states);
+    }
+
+    /**
      * Sets the states of the modules
      * 
      * @param states The states of the modules, in order of front left, front right,
      *               back left, back right
      */
-    public void setModuleStates(SwerveModuleState[] states) {
+    private void setModuleStates(SwerveModuleState[] states) {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_SPEED);
         for (int i = 0; i < 4; i++) {
             states[i] = SwerveModuleState.optimize(states[i], modules[i].getAngleRotation());
@@ -108,7 +128,7 @@ public class Chassis extends SubsystemBase {
      * @return The states of the modules, in order of front left, front right, back
      *         left, back right
      */
-    public SwerveModuleState[] getModuleStates() {
+    private SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (int i = 0; i < 4; i++) {
             states[i] = modules[i].getState();
@@ -149,9 +169,10 @@ public class Chassis extends SubsystemBase {
      * Resets the angle of the robot, so the forward of the robot is the same as the
      * forward of the field
      */
-    public void resetAngle() {
+    private void resetAngle() {
         gyro.setYaw(0);
         gyro.setFusedHeading(0);
+        while (Math.abs(gyro.getFusedHeading()) > 0.1);
         poseEstimator.resetPosition(getGyroRotation(), getModulePositions(),
                 new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), new Rotation2d()));
     }
@@ -162,7 +183,7 @@ public class Chassis extends SubsystemBase {
      * @return The positions of the modules, in order of front left, front right,
      *         back left, back right
      */
-    public SwerveModulePosition[] getModulePositions() {
+    private SwerveModulePosition[] getModulePositions() {
         return Arrays.stream(modules).map((module) -> module.getPosition()).toArray(SwerveModulePosition[]::new);
     }
 
@@ -170,7 +191,7 @@ public class Chassis extends SubsystemBase {
      * Resets the pose of the robot
      * @param pose The pose to reset to
      */
-    public void resetPose(Pose2d pose) {
+    private void resetPose(Pose2d pose) {
         poseEstimator.resetPosition(getGyroRotation(), getModulePositions(), pose);
     }
 
