@@ -22,6 +22,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -224,6 +225,16 @@ public class Chassis extends SubsystemBase {
         var trajectory = PathPlanner.loadPath(path,
                 new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ACCELERATION));
         return builder.fullAuto(trajectory);
+    }
+
+    /**
+     * Adds a vision input to the estimated pose of the robot
+     * 
+     * @param estimatedPose The estimated pose of the robot by vision
+     * @param timeOfMeasurement The time of the vision measurement by {@link Timer#getFPGATimestamp()}
+     */
+    public void addVisionInput(Pose2d estimatedPose, double timeOfMeasurement) {
+        poseEstimator.addVisionMeasurement(estimatedPose, timeOfMeasurement);
     }
 
     @Override
