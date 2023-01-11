@@ -12,7 +12,6 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -202,7 +201,7 @@ public class Chassis extends SubsystemBase {
      * @param events The events to run on the markers in the path
      * @return the path following command
      */
-    public FollowPathWithEvents createPathFollowingCommand(String path, Map<String, Command> events) {
+    public Command createPathFollowingCommand(String path, Map<String, Command> events) {
         SwerveAutoBuilder builder = new SwerveAutoBuilder(
                 this::getPose,
                 this::resetPose,
@@ -214,8 +213,7 @@ public class Chassis extends SubsystemBase {
                 this);
 
         var trajectory = PathPlanner.loadPath(path, new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ANGULAR_SPEED));
-        Command command = builder.fullAuto(trajectory);
-        return new FollowPathWithEvents(command, trajectory.getMarkers(), events);
+        return builder.fullAuto(trajectory);
     }
 
     @Override
