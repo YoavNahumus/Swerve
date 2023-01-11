@@ -145,7 +145,8 @@ public final class General {
      * 
      * @param controller The controller to get the value from
      * @param side       The side of the controller to get the value from
-     * @return The rotation, 0 is right, positive is counterclockwise
+     * @return The rotation, 0 is right, positive is counterclockwise (null if the
+     *         stick is not being used)
      */
     public static Rotation2d getStickRotation(XboxController controller, ControllerSide side) {
         Translation2d translation = getStick(controller, side, true);
