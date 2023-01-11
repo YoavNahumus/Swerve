@@ -134,6 +134,7 @@ public class Chassis extends SubsystemBase {
      * @return The states of the modules, in order of front left, front right, back
      *         left, back right
      */
+    @SuppressWarnings("unused")
     private SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (int i = 0; i < 4; i++) {

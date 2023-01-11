@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.Chassis;
 import frc.robot.utils.General;
+import frc.robot.utils.General.ControllerSide;
 
 public class DriveVelocities extends CommandBase {
     private final Chassis chassis;
@@ -29,8 +30,8 @@ public class DriveVelocities extends CommandBase {
 
     @Override
     public void execute() {
-        Translation2d xy = General.getScaledXY(controller, 2);
-        double vx = -xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
+        Translation2d xy = General.getScaledStick(controller, ControllerSide.LEFT, 2);
+        double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
         double omega = General
                 .scale(General.deadband(controller.getLeftTriggerAxis() - controller.getRightTriggerAxis()), 2)

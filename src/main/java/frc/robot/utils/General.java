@@ -101,14 +101,39 @@ public final class General {
     }
 
     /**
+     * The side of the controller, Left or Right
+     */
+    public static enum ControllerSide {
+        LEFT, RIGHT
+    }
+
+    /**
+     * Gets the x and y values from an XboxController
+     * 
+     * @param controller The XboxController to get the values from
+     * @param side       The side of the controller to get the values from
+     * @param deadband   Whether to apply a deadband to the values
+     * @return The x and y values (positive is right and up)
+     */
+    public static Translation2d getStick(XboxController controller, ControllerSide side, boolean deadband) {
+        if (side == ControllerSide.LEFT) {
+            return deadband ? new Translation2d(deadband(controller.getLeftX()), deadband(-controller.getLeftY()))
+                    : new Translation2d(controller.getLeftX(), -controller.getLeftY());
+        }
+        return deadband ? new Translation2d(deadband(controller.getRightX()), deadband(-controller.getRightY()))
+                : new Translation2d(controller.getRightX(), -controller.getRightY());
+    }
+
+    /**
      * Gets the scaled x and y values from an XboxController
      * 
      * @param controller The XboxController to get the values from
+     * @param side       The side of the controller to get the values from
      * @param scale      The scale to scale by
-     * @return The scaled x and y values
+     * @return The scaled x and y values (positive is right and up)
      */
-    public static Translation2d getScaledXY(XboxController controller, double scale) {
-        Translation2d translation = new Translation2d(deadband(controller.getLeftX()), deadband(controller.getLeftY()));
+    public static Translation2d getScaledStick(XboxController controller, ControllerSide side, double scale) {
+        Translation2d translation = getStick(controller, side, true);
         translation = translation.times(Math.pow(translation.getNorm(), scale - 1));
         return translation;
     }
@@ -117,13 +142,15 @@ public final class General {
      * Gets the rotation of the right stick on the controller
      * 
      * @param controller The controller to get the value from
-     * @return The rotation
+     * @param side       The side of the controller to get the value from
+     * @return The rotation, 0 is right, positive is counterclockwise
      */
-    public static Rotation2d getRotation(XboxController controller) {
-        double x = deadband(controller.getRightX());
-        double y = deadband(-controller.getRightY());
-        if (x == 0 && y == 0)
+    public static Rotation2d getStickRotation(XboxController controller, ControllerSide side) {
+        Translation2d translation = getStick(controller, side, true);
+        if (translation.getNorm() == 0) {
             return null;
-        return new Rotation2d(x, y);
+        }
+        return translation.getAngle();
     }
+
 }
