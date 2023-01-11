@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants;
 
 /**
  * Contains general utility methods
@@ -51,13 +52,14 @@ public final class General {
     }
 
     /**
-     * Limits a value to be at least greater than 0.1 or less than -0.1
+     * Limits a value to be at least greater than the deadband constant or smaller
+     * than -deadband constant
      * 
      * @param value The value to limit
      * @return The limited value
      */
     public static double deadband(double value) {
-        if (Math.abs(value) < 0.15) {
+        if (Math.abs(value) < Constants.DEADBAND) {
             return 0;
         }
         return value;

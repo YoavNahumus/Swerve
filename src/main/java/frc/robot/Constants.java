@@ -21,6 +21,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final double DEADBAND = 0.15;
+
     /**
      * The Swerve Modules constants.
      */
