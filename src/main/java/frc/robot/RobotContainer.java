@@ -26,7 +26,6 @@ import frc.robot.subsystems.Chassis;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // The robot's subsystems and commands are defined here...
     private final XboxController controller = new XboxController(0);
     private final JoystickButton aButton = new JoystickButton(controller, 1);
     private final Chassis chassis;
@@ -69,7 +68,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
         return chassis.createPathFollowingCommand("New Path", new HashMap<>());
     }
 }
