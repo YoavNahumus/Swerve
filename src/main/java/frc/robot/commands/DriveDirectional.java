@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -13,19 +14,19 @@ import frc.robot.utils.General;
 import frc.robot.utils.General.ControllerSide;
 
 /**
- * Drives the robot using the left stick for velocity and the triggers for rotation.
+ * Drives the robot using the left stick for velocity and the right stick for heading.
  */
-public class DriveVelocities extends CommandBase {
+public class DriveDirectional extends CommandBase {
     private final Chassis chassis;
     private final XboxController controller;
 
     /**
-     * Creates a new DriveVelocities.
+     * Creates a new DriveDirectional.
      * 
      * @param chassis    The chassis to drive
-     * @param controller The controller to get input from (left stick is used for velocity, triggers for rotation)
+     * @param controller The controller to get input from (left stick is used for velocity, right stick for heading)
      */
-    public DriveVelocities(Chassis chassis, XboxController controller) {
+    public DriveDirectional(Chassis chassis, XboxController controller) {
         this.chassis = chassis;
         this.controller = controller;
         addRequirements(chassis);
@@ -36,12 +37,12 @@ public class DriveVelocities extends CommandBase {
         Translation2d xy = General.getScaledStick(controller, ControllerSide.LEFT, 2);
         double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
-        double omega = General.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2);
+        Rotation2d angle = General.getStickRotation(controller, ControllerSide.RIGHT);
 
-        if (vx == 0 && vy == 0 && omega == 0)
+        if (vx == 0 && vy == 0 && angle == null)
             chassis.stop();
         else
-            chassis.setVelocities(vx, vy, omega);
+            chassis.setAngleAndVelocity(vx, vy, angle.getRadians());
     }
 
     @Override

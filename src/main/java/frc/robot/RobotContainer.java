@@ -9,7 +9,6 @@ import java.util.HashMap;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,7 +35,6 @@ public class RobotContainer {
      */
     private RobotContainer() {
         chassis = new Chassis();
-        SmartDashboard.putData(chassis);
         chassis.setDefaultCommand(new DriveVelocities(chassis, controller));
 
         configureButtonBindings();

@@ -156,4 +156,19 @@ public final class General {
         return translation.getAngle();
     }
 
+    /**
+     * Gets the scaled Difference between the two triggers on the controller
+     * 
+     * @param controller The controller to get the value from
+     * @param positive   The side of the controller which is positive output, the
+     *                   other being negative
+     * @param scale      The scale to scale by
+     * @return The scaled difference between the two triggers
+     */
+    public static double getScaledTriggerDiff(XboxController controller, ControllerSide positive, double scale) {
+        if (positive == ControllerSide.LEFT) {
+            return scale(deadband(controller.getLeftTriggerAxis()) - deadband(controller.getRightTriggerAxis()), scale);
+        }
+        return scale(deadband(controller.getRightTriggerAxis()) - deadband(controller.getLeftTriggerAxis()), scale);
+    }
 }
