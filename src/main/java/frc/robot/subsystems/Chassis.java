@@ -102,7 +102,8 @@ public class Chassis extends SubsystemBase {
     public void setAngleAndVelocity(double vx, double vy, double angle) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy,
                 -angleController.calculate(General.normalizeRadians(getRotation().getRadians()),
-                General.normalizeRadians(angle)), getRotation());
+                        General.normalizeRadians(angle)),
+                getRotation());
         SwerveModuleState[] states = SwerveConstants.KINEMATICS.toSwerveModuleStates(speeds);
         setModuleStates(states);
     }
@@ -188,6 +189,7 @@ public class Chassis extends SubsystemBase {
 
     /**
      * Resets the pose of the robot
+     * 
      * @param pose The pose to reset to
      */
     private void resetPose(Pose2d pose) {
@@ -197,7 +199,7 @@ public class Chassis extends SubsystemBase {
     /**
      * Creates a path following command
      * 
-     * @param path The path to follow
+     * @param path   The path to follow
      * @param events The events to run on the markers in the path
      * @return the path following command
      */
@@ -212,7 +214,8 @@ public class Chassis extends SubsystemBase {
                 events,
                 this);
 
-        var trajectory = PathPlanner.loadPath(path, new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ANGULAR_SPEED));
+        var trajectory = PathPlanner.loadPath(path,
+                new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ANGULAR_SPEED));
         return builder.fullAuto(trajectory);
     }
 

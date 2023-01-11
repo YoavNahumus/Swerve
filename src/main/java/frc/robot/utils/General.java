@@ -119,7 +119,8 @@ public final class General {
     public static Rotation2d getRotation(XboxController controller) {
         double x = deadband(controller.getRightX());
         double y = deadband(-controller.getRightY());
-        if (x == 0 && y == 0) return null;
+        if (x == 0 && y == 0)
+            return null;
         return new Rotation2d(x, y);
     }
 }
