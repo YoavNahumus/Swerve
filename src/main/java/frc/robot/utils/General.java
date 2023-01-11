@@ -7,6 +7,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.XboxController;
 
+/**
+ * Contains general utility methods
+ */
 public final class General {
     /**
      * Gets the difference between two angles, accounting for wrapping around 360

@@ -32,6 +32,9 @@ import frc.robot.commands.templates.InstantCommandInDisable;
 import frc.robot.utils.General;
 import frc.robot.utils.SwerveModule;
 
+/**
+ * The subsystem that controls the robot's swerve chassis
+ */
 public class Chassis extends SubsystemBase {
     private final Field2d field;
     private final SwerveModule[] modules;
@@ -40,6 +43,9 @@ public class Chassis extends SubsystemBase {
     private final PIDController angleController;
     private boolean isBreak;
 
+    /**
+     * Creates a new Chassis.
+     */
     public Chassis() {
         field = new Field2d();
         gyro = new PigeonIMU(SwerveConstants.GYRO_ID);

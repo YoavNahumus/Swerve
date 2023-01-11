@@ -15,11 +15,19 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants.SwerveModuleConstants;
 
+/**
+ * A swerve module
+ */
 public class SwerveModule implements Sendable {
     private double angleOffset;
     private final TalonFX moveMotor, angleMotor;
     private final CANCoder absoluteEncoder;
 
+    /**
+     * Creates a new SwerveModule
+     * 
+     * @param constants The constants for the module
+     */
     public SwerveModule(SwerveModuleConstants constants) {
         angleOffset = constants.angleOffset;
         moveMotor = new TalonFX(constants.moveMotorID);

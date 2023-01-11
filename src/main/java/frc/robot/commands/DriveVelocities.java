@@ -15,6 +15,12 @@ public class DriveVelocities extends CommandBase {
     private final Chassis chassis;
     private final XboxController controller;
 
+    /**
+     * Creates a new DriveVelocities.
+     * 
+     * @param chassis    The chassis to drive
+     * @param controller The controller to get input from (left stick is used for velocity, triggers for rotation)
+     */
     public DriveVelocities(Chassis chassis, XboxController controller) {
         this.chassis = chassis;
         this.controller = controller;

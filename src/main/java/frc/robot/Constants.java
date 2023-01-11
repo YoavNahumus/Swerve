@@ -21,6 +21,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    /**
+     * The Swerve Modules constants.
+     */
     public static class SwerveModuleConstants {
         public final double angleOffset;
         public final int moveMotorID;
@@ -42,6 +45,14 @@ public final class Constants {
         public static final double GEAR_RATIO_ANGLE = 12.8;
         public static final double PULSE_PER_DEGREE = PPR_FALCON * GEAR_RATIO_ANGLE / 360;
 
+        /**
+         * Creates a new SwerveModuleConstants.
+         * 
+         * @param angleOffset       The offset of the absolute encoder from the module
+         * @param moveMotorID       The CAN ID of the drive motor
+         * @param angleMotorID      The CAN ID of the angle motor
+         * @param absoluteEncoderID The CAN ID of the absolute encoder
+         */
         private SwerveModuleConstants(double angleOffset, int moveMotorID, int angleMotorID, int absoluteEncoderID) {
             this.angleOffset = angleOffset;
             this.moveMotorID = moveMotorID;
@@ -55,6 +66,9 @@ public final class Constants {
         public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(289.335, 3, 4, 12);
     }
 
+    /**
+     * The Swerve Drive constants.
+     */
     public static final class SwerveConstants {
         public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
                 new Translation2d(0.31515, 0.27015), // front left
