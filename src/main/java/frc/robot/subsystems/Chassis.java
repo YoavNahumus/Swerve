@@ -222,7 +222,7 @@ public class Chassis extends SubsystemBase {
                 this);
 
         var trajectory = PathPlanner.loadPath(path,
-                new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ANGULAR_SPEED));
+                new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ACCELERATION));
         return builder.fullAuto(trajectory);
     }
 
