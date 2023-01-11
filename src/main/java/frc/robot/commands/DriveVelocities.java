@@ -36,7 +36,7 @@ public class DriveVelocities extends CommandBase {
         Translation2d xy = General.getScaledStick(controller, ControllerSide.LEFT, 2);
         double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
-        double omega = General.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2);
+        double omega = General.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2) * SwerveConstants.MAX_ANGULAR_SPEED;
 
         if (vx == 0 && vy == 0 && omega == 0)
             chassis.stop();

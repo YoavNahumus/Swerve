@@ -150,7 +150,7 @@ public final class General {
      */
     public static Rotation2d getStickRotation(XboxController controller, ControllerSide side) {
         Translation2d translation = getStick(controller, side, true);
-        if (translation.getNorm() == 0) {
+        if (translation.getNorm() <= Constants.ANGLE_DEADBAND) {
             return null;
         }
         return translation.getAngle();

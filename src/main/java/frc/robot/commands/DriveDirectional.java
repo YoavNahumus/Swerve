@@ -14,7 +14,8 @@ import frc.robot.utils.General;
 import frc.robot.utils.General.ControllerSide;
 
 /**
- * Drives the robot using the left stick for velocity and the right stick for heading.
+ * Drives the robot using the left stick for velocity and the right stick for
+ * heading.
  */
 public class DriveDirectional extends CommandBase {
     private final Chassis chassis;
@@ -24,7 +25,8 @@ public class DriveDirectional extends CommandBase {
      * Creates a new DriveDirectional.
      * 
      * @param chassis    The chassis to drive
-     * @param controller The controller to get input from (left stick is used for velocity, right stick for heading)
+     * @param controller The controller to get input from (left stick is used for
+     *                   velocity, right stick for heading)
      */
     public DriveDirectional(Chassis chassis, XboxController controller) {
         this.chassis = chassis;
@@ -41,8 +43,10 @@ public class DriveDirectional extends CommandBase {
 
         if (vx == 0 && vy == 0 && angle == null)
             chassis.stop();
+        else if (angle == null)
+            chassis.setVelocities(vx, vy, 0);
         else
-            chassis.setAngleAndVelocity(vx, vy, angle.getRadians());
+            chassis.setAngleAndVelocity(vx, vy, angle.getRadians() - Math.PI / 2);
     }
 
     @Override

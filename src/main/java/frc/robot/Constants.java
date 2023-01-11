@@ -22,6 +22,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  */
 public final class Constants {
     public static final double DEADBAND = 0.15;
+    public static final double ANGLE_DEADBAND = 0.5;
 
     /**
      * The Swerve Modules constants.
@@ -62,10 +63,10 @@ public final class Constants {
             this.absoluteEncoderID = absoluteEncoderID;
         }
 
-        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(10.371, 7, 8, 11);
-        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(117.158, 5, 6, 13);
-        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(46.054, 1, 2, 10);
-        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(289.335, 3, 4, 12);
+        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(199.9511, 7, 8, 11);
+        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(297.5976, 5, 6, 13);
+        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(226.0546, 1, 2, 10);
+        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(109.5996, 3, 4, 12);
     }
 
     /**
@@ -87,9 +88,14 @@ public final class Constants {
         public static final double MAX_DRIVE_SPEED = 3.5;
         public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
 
-        public static final double AUTO_TRANSLATION_KP = -1;
-        public static final double AUTO_TRANSLATION_KI = -1;
-        public static final double AUTO_ROTATION_KP = 2;
+        public static final double AUTO_TRANSLATION_KP = 1;
+        public static final double AUTO_TRANSLATION_KI = 0;
+        public static final double AUTO_ROTATION_KP = 1;
         public static final double AUTO_ROTATION_KI = 0;
+
+        public static final double TELEOP_ROTATION_KP = 3;
+        public static final double TELEOP_ROTATION_KI = 0;
+
+        public static final double ANGLE_TOLERANCE = 0.1 / 6;
     }
 }

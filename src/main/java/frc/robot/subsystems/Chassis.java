@@ -56,9 +56,10 @@ public class Chassis extends SubsystemBase {
                 new SwerveModule(SwerveModuleConstants.BACK_LEFT),
                 new SwerveModule(SwerveModuleConstants.BACK_RIGHT)
         };
-        angleController = new PIDController(SwerveConstants.AUTO_ROTATION_KP,
-                SwerveConstants.AUTO_ROTATION_KI, 0);
+        angleController = new PIDController(SwerveConstants.TELEOP_ROTATION_KP,
+                SwerveConstants.TELEOP_ROTATION_KI, 0);
         angleController.enableContinuousInput(0, 2 * Math.PI);
+        angleController.setTolerance(SwerveConstants.ANGLE_TOLERANCE);
         poseEstimator = new SwerveDrivePoseEstimator(SwerveConstants.KINEMATICS, getGyroRotation(),
                 getModulePositions(), new Pose2d(0, 0, getGyroRotation()));
         isBreak = true;
@@ -109,12 +110,16 @@ public class Chassis extends SubsystemBase {
      * @param angle The angle of the robot, in radians
      */
     public void setAngleAndVelocity(double vx, double vy, double angle) {
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy,
-                -angleController.calculate(General.normalizeRadians(getRotation().getRadians()),
-                        General.normalizeRadians(angle)),
-                getRotation());
-        SwerveModuleState[] states = SwerveConstants.KINEMATICS.toSwerveModuleStates(speeds);
-        setModuleStates(states);
+        angleController.setSetpoint(General.normalizeRadians(angle));
+        if (angleController.atSetpoint())
+            setVelocities(vx, vy, 0);
+        else {
+            ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy,
+                    -angleController.calculate(General.normalizeRadians(getRotation().getRadians())),
+                    getRotation());
+            SwerveModuleState[] states = SwerveConstants.KINEMATICS.toSwerveModuleStates(speeds);
+            setModuleStates(states);
+        }
     }
 
     /**
@@ -182,7 +187,8 @@ public class Chassis extends SubsystemBase {
     private void resetAngle() {
         gyro.setYaw(0);
         gyro.setFusedHeading(0);
-        while (Math.abs(gyro.getFusedHeading()) > 0.1);
+        while (Math.abs(gyro.getFusedHeading()) > 0.1)
+            ;
         poseEstimator.resetPosition(getGyroRotation(), getModulePositions(),
                 new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), new Rotation2d()));
     }
@@ -232,8 +238,9 @@ public class Chassis extends SubsystemBase {
     /**
      * Adds a vision input to the estimated pose of the robot
      * 
-     * @param estimatedPose The estimated pose of the robot by vision
-     * @param timeOfMeasurement The time of the vision measurement by {@link Timer#getFPGATimestamp()}
+     * @param estimatedPose     The estimated pose of the robot by vision
+     * @param timeOfMeasurement The time of the vision measurement by
+     *                          {@link Timer#getFPGATimestamp()}
      */
     public void addVisionInput(Pose2d estimatedPose, double timeOfMeasurement) {
         poseEstimator.addVisionMeasurement(estimatedPose, timeOfMeasurement);
