@@ -66,6 +66,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return chassis.createPathFollowingCommand("New Path", new HashMap<>());
+        return chassis.createPathFollowingCommand("Test", new HashMap<>());
     }
 }
