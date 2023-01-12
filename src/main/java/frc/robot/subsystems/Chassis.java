@@ -111,15 +111,10 @@ public class Chassis extends SubsystemBase {
      */
     public void setAngleAndVelocity(double vx, double vy, double angle) {
         angleController.setSetpoint(General.normalizeRadians(angle));
-        if (angleController.atSetpoint())
-            setVelocities(vx, vy, 0);
-        else {
-            ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy,
-                    angleController.calculate(General.normalizeRadians(getRotation().getRadians())),
-                    getRotation());
-            SwerveModuleState[] states = SwerveConstants.KINEMATICS.toSwerveModuleStates(speeds);
-            setModuleStates(states);
-        }
+        double omega = 0;
+        if (!angleController.atSetpoint())
+            omega = angleController.calculate(General.normalizeRadians(getRotation().getRadians()));
+        setVelocities(vx, vy, omega);
     }
 
     /**
