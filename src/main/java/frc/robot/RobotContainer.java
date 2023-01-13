@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DriveVelocities;
+import frc.robot.commands.DriveDirectional;
 import frc.robot.subsystems.Chassis;
 
 /**
@@ -35,7 +35,7 @@ public class RobotContainer {
      */
     private RobotContainer() {
         chassis = new Chassis();
-        chassis.setDefaultCommand(new DriveVelocities(chassis, controller));
+        chassis.setDefaultCommand(new DriveDirectional(chassis, controller));
 
         configureButtonBindings();
     }
@@ -66,6 +66,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return chassis.createPathFollowingCommand("Test", new HashMap<>());
+        return chassis.createPathFollowingCommand("Test2   ", new HashMap<>());
     }
 }

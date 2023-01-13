@@ -63,10 +63,10 @@ public final class Constants {
             this.absoluteEncoderID = absoluteEncoderID;
         }
 
-        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(199.9511, 7, 8, 11);
-        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(297.5976, 5, 6, 13);
-        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(226.0546, 1, 2, 10);
-        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(109.5996, 3, 4, 12);
+        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(221.1328, 7, 8, 11);
+        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(296.455, 5, 6, 13);
+        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(226.4062, 1, 2, 10);
+        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(110.039, 3, 4, 12);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class Constants {
 
         public static final double MAX_SPEED = (1 - SwerveModuleConstants.VELOCITY_KS)
                 / SwerveModuleConstants.VELOCITY_KV; // meters per second
-        public static final double MAX_ACCELERATION = 3.5; // meters per second squared
+        public static final double MAX_ACCELERATION = 3; // meters per second squared
         public static final double MAX_DRIVE_SPEED = 3.5;
         public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
 
@@ -93,9 +93,9 @@ public final class Constants {
         public static final double AUTO_ROTATION_KP = 1;
         public static final double AUTO_ROTATION_KI = 0;
 
-        public static final double TELEOP_ROTATION_KP = 3;
-        public static final double TELEOP_ROTATION_KI = 0;
+        public static final double TELEOP_ROTATION_KP = 4;
+        public static final double TELEOP_ROTATION_KI = 0.3;
 
-        public static final double ANGLE_TOLERANCE = 0.1 / 6;
+        public static final double ANGLE_TOLERANCE = Math.PI / 120;
     }
 }
