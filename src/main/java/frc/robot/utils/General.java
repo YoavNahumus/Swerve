@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants;
@@ -86,7 +87,7 @@ public final class General {
     public static String round(double value, int places) {
         long factor = (long) Math.pow(10, places);
         long temp = Math.round(value * factor);
-        return String.format("%d.%d", temp / factor, temp % factor);
+        return String.format("%d.%d", temp / factor, Math.abs(temp) % factor);
     }
 
     /**
@@ -170,5 +171,15 @@ public final class General {
             return scale(deadband(controller.getLeftTriggerAxis()) - deadband(controller.getRightTriggerAxis()), scale);
         }
         return scale(deadband(controller.getRightTriggerAxis()) - deadband(controller.getLeftTriggerAxis()), scale);
+    }
+
+    /**
+     * Checks if the robot's alliance is the red alliance from the FMSInfo (note: if
+     * not in a match, your alliance will be what you have in the DS)
+     * 
+     * @return true if red, false if blue
+     */
+    public static boolean isRedAlliance() {
+        return NetworkTableInstance.getDefault().getEntry("FMSInfo/IsRedAlliance").getBoolean(true);
     }
 }

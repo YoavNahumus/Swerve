@@ -13,7 +13,8 @@ import frc.robot.utils.General;
 import frc.robot.utils.General.ControllerSide;
 
 /**
- * Drives the robot using the left stick for velocity and the triggers for rotation.
+ * Drives the robot using the left stick for velocity and the triggers for
+ * rotation.
  */
 public class DriveVelocities extends CommandBase {
     private final Chassis chassis;
@@ -23,7 +24,8 @@ public class DriveVelocities extends CommandBase {
      * Creates a new DriveVelocities.
      * 
      * @param chassis    The chassis to drive
-     * @param controller The controller to get input from (left stick is used for velocity, triggers for rotation)
+     * @param controller The controller to get input from (left stick is used for
+     *                   velocity, triggers for rotation)
      */
     public DriveVelocities(Chassis chassis, XboxController controller) {
         this.chassis = chassis;
@@ -33,10 +35,12 @@ public class DriveVelocities extends CommandBase {
 
     @Override
     public void execute() {
-        Translation2d xy = General.getScaledStick(controller, ControllerSide.LEFT, 2);
+        Translation2d xy = General.getScaledStick(controller, ControllerSide.LEFT, 2)
+                .times(General.isRedAlliance() ? -1 : 1);
         double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
-        double omega = General.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2) * SwerveConstants.MAX_ANGULAR_SPEED;
+        double omega = General.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2)
+                * SwerveConstants.MAX_ANGULAR_SPEED;
 
         if (vx == 0 && vy == 0 && omega == 0)
             chassis.stop();
