@@ -36,8 +36,9 @@ public class Drive extends CommandBase {
 
     @Override
     public void execute() {
+        boolean red = General.isRedAlliance();
         Translation2d xy = General.getScaledStick(controller, ControllerSide.LEFT, 2)
-                .times(General.isRedAlliance() ? -1 : 1);
+                .times(red ? -1 : 1);
         double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
         double omega = General.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2)
@@ -49,7 +50,7 @@ public class Drive extends CommandBase {
         else if (angle == null)
             chassis.setVelocities(vx, vy, omega);
         else
-            chassis.setAngleAndVelocity(vx, vy, angle.getRadians() - Math.PI / 2);
+            chassis.setAngleAndVelocity(vx, vy, angle.getRadians() + Math.PI / 2 * (red ? 1 : -1));
     }
 
     @Override
