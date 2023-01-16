@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPoint;
@@ -35,7 +34,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
-import frc.robot.commands.templates.InstantCommandInDisable;
 import frc.robot.utils.General;
 import frc.robot.utils.SwerveModule;
 
@@ -259,8 +257,7 @@ public class Chassis extends SubsystemBase {
      * @return the path following command
      */
     public Command createPathFollowingCommand(String path, Map<String, Command> events) {
-        var trajectory = PathPlanner.loadPath(path,
-                new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ACCELERATION));
+        var trajectory = PathPlanner.loadPath(path, SwerveConstants.PATH_CONSTRAINTS);
         return createPathFollowingCommand(trajectory, events, false);
     }
 
@@ -283,9 +280,7 @@ public class Chassis extends SubsystemBase {
     public Command createPathFollowingCommand(PathPoint... points) {
         if (points.length < 2)
             return null;
-        var trajectory = PathPlanner.generatePath(
-                new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ACCELERATION),
-                Arrays.asList(points));
+        var trajectory = PathPlanner.generatePath(SwerveConstants.PATH_CONSTRAINTS, Arrays.asList(points));
         return createPathFollowingCommand(trajectory, new HashMap<>(), false);
     }
 
@@ -317,14 +312,14 @@ public class Chassis extends SubsystemBase {
 
         builder.addDoubleProperty("Angle", this::getAngle, null);
 
-        SmartDashboard.putData("Change Neutral", new InstantCommandInDisable(this::swapNeutralMode));
+        SmartDashboard.putData("Change Neutral", new InstantCommand(this::swapNeutralMode).ignoringDisable(true));
 
-        SmartDashboard.putData("Zero Angle", new InstantCommandInDisable(this::resetAngle));
+        SmartDashboard.putData("Zero Angle", new InstantCommand(this::resetAngle).ignoringDisable(true));
 
-        SmartDashboard.putData("Calibrate Offsets", new InstantCommandInDisable(() -> {
+        SmartDashboard.putData("Calibrate Offsets", new InstantCommand(() -> {
             for (var module : modules) {
                 module.calibrateOffset();
             }
-        }));
+        }).ignoringDisable(true));
     }
 }

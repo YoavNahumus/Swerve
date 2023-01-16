@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
+
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import frc.robot.utils.Rectangle;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -21,8 +24,19 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final double DEADBAND = 0.15;
-    public static final double ANGLE_DEADBAND = 0.5;
+    public static final double JOYSTICK_DEADBAND = 0.15; // the deadband for the joysticks
+    public static final double JOYSTICK_ANGLE_DEADBAND = 0.5; // the deadband for the angle of the joysticks
+    public static final double JOYSTICK_IDLE_DEADBAND = 0.3; // the deadband to check if the joystick is idle
+
+    public static final Rectangle RAMP = new Rectangle(2.91, 1.51, 4.85, 3.98); // in meters, blue alliance
+    public static final Rectangle OPEN_AREA = new Rectangle(4.85, 0.0, 11.69, 8.02); // in meters, blue alliance
+    public static final Rectangle ENTRANCE_BOTTOM = new Rectangle(2.91, 0.0, 4.85, 1.51); // in meters, blue alliance
+    public static final Rectangle ENTRANCE_TOP = new Rectangle(2.91, 3.98, 4.85, 5.49); // in meters, blue alliance
+    public static final Rectangle COMMUNITY_BOTTOM = new Rectangle(0.0, 0.0, 2.91, 1.51); // in meters, blue alliance
+    public static final Rectangle COMMUNITY_TOP = new Rectangle(0.0, 1.51, 2.91, 5.49); // in meters, blue alliance
+    public static final Rectangle LOADING_ZONE = new Rectangle(11.69, 5.55, 16.54, 8.02); // in meters, blue alliance
+
+    public static final double FIELD_WIDTH = 16.54; // in meters
 
     /**
      * The Swerve Modules constants.
@@ -85,6 +99,7 @@ public final class Constants {
         public static final double MAX_SPEED = (1 - SwerveModuleConstants.VELOCITY_KS)
                 / SwerveModuleConstants.VELOCITY_KV; // meters per second
         public static final double MAX_ACCELERATION = 3; // meters per second squared
+        public static final PathConstraints PATH_CONSTRAINTS = new PathConstraints(MAX_SPEED, MAX_ACCELERATION);
         public static final double MAX_DRIVE_SPEED = 3.5;
         public static final double MAX_ANGULAR_SPEED = 2 * Math.PI; // radians per second
 
