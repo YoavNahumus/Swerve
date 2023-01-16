@@ -5,18 +5,22 @@
 package frc.robot.subsystems;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -26,6 +30,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
@@ -137,7 +143,6 @@ public class Chassis extends SubsystemBase {
      * @return The states of the modules, in order of front left, front right, back
      *         left, back right
      */
-    @SuppressWarnings("unused")
     private SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (int i = 0; i < 4; i++) {
@@ -208,6 +213,44 @@ public class Chassis extends SubsystemBase {
     }
 
     /**
+     * Gets the velocity of the robot
+     * 
+     * @return The velocity of the robot, in meters per second
+     */
+    public Translation2d getVelocity() {
+        ChassisSpeeds speeds = SwerveConstants.KINEMATICS.toChassisSpeeds(getModuleStates());
+        return new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+    }
+
+    /**
+     * Creates a path following command, executing events along the way
+     * 
+     * @param trajectory The trajectory to follow
+     * @param events     The events to execute
+     * @param resetPose  Whether to reset the pose of the robot at the start of the command
+     * @return The path following command
+     */
+    public Command createPathFollowingCommand(PathPlannerTrajectory trajectory, Map<String, Command> events,
+            boolean resetPose) {
+        var command = new SequentialCommandGroup(
+                new InstantCommand(() -> {
+                    if (resetPose)
+                        resetPose(trajectory.getInitialPose());
+                }),
+                new PPSwerveControllerCommand(
+                        trajectory,
+                        this::getPose,
+                        SwerveConstants.KINEMATICS,
+                        new PIDController(SwerveConstants.AUTO_TRANSLATION_KP, SwerveConstants.AUTO_TRANSLATION_KI, 0),
+                        new PIDController(SwerveConstants.AUTO_TRANSLATION_KP, SwerveConstants.AUTO_TRANSLATION_KI, 0),
+                        new PIDController(SwerveConstants.AUTO_ROTATION_KP, SwerveConstants.AUTO_ROTATION_KI, 0),
+                        this::setModuleStates,
+                        this));
+
+        return new FollowPathWithEvents(command, trajectory.getMarkers(), events);
+    }
+
+    /**
      * Creates a path following command
      * 
      * @param path   The path to follow
@@ -215,19 +258,34 @@ public class Chassis extends SubsystemBase {
      * @return the path following command
      */
     public Command createPathFollowingCommand(String path, Map<String, Command> events) {
-        SwerveAutoBuilder builder = new SwerveAutoBuilder(
-                this::getPose,
-                this::resetPose,
-                SwerveConstants.KINEMATICS,
-                new PIDConstants(SwerveConstants.AUTO_TRANSLATION_KP, SwerveConstants.AUTO_TRANSLATION_KI, 0),
-                new PIDConstants(SwerveConstants.AUTO_ROTATION_KP, SwerveConstants.AUTO_ROTATION_KI, 0),
-                this::setModuleStates,
-                events,
-                this);
-
         var trajectory = PathPlanner.loadPath(path,
                 new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ACCELERATION));
-        return builder.fullAuto(trajectory);
+        return createPathFollowingCommand(trajectory, events, false);
+    }
+
+    /**
+     * Creates a path following command
+     * 
+     * @param path The path to follow
+     * @return the path following command
+     */
+    public Command createPathFollowingCommand(String path) {
+        return createPathFollowingCommand(path, new HashMap<>());
+    }
+
+    /**
+     * Creates a path following command
+     * 
+     * @param points The points to follow
+     * @return       the path following command
+     */
+    public Command createPathFollowingCommand(PathPoint... points) {
+        if (points.length < 2)
+            return null;
+        var trajectory = PathPlanner.generatePath(
+                new PathConstraints(SwerveConstants.MAX_SPEED, SwerveConstants.MAX_ACCELERATION),
+                Arrays.asList(points));
+        return createPathFollowingCommand(trajectory, new HashMap<>(), false);
     }
 
     /**
