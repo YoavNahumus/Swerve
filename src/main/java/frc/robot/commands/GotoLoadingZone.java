@@ -20,6 +20,9 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.utils.General;
 import frc.robot.utils.General.Zone;
 
+/**
+ * Drives the robot semi autonomously to the loading zone.
+ */
 public class GotoLoadingZone extends CommandBase {
 
     private final Chassis chassis;
@@ -42,6 +45,12 @@ public class GotoLoadingZone extends CommandBase {
             FROM_BOTTOM_ENTRANCE_RED = PathPlanner.loadPath("BottomEntranceToFeederRed",
                     SwerveConstants.PATH_CONSTRAINTS);
 
+    /**
+     * Drives the robot semi autonomously to the loading zone.
+     * 
+     * @param chassis    The chassis subsystem
+     * @param controller The controller to check for input
+     */
     public GotoLoadingZone(Chassis chassis, XboxController controller) {
         this.chassis = chassis;
         this.controller = controller;
