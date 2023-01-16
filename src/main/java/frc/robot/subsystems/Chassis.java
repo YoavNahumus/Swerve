@@ -227,7 +227,8 @@ public class Chassis extends SubsystemBase {
      * 
      * @param trajectory The trajectory to follow
      * @param events     The events to execute
-     * @param resetPose  Whether to reset the pose of the robot at the start of the command
+     * @param resetPose  Whether to reset the pose of the robot at the start of the
+     *                   command
      * @return The path following command
      */
     public Command createPathFollowingCommand(PathPlannerTrajectory trajectory, Map<String, Command> events,
@@ -277,7 +278,7 @@ public class Chassis extends SubsystemBase {
      * Creates a path following command
      * 
      * @param points The points to follow
-     * @return       the path following command
+     * @return the path following command
      */
     public Command createPathFollowingCommand(PathPoint... points) {
         if (points.length < 2)
