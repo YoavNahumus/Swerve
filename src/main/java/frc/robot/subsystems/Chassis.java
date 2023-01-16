@@ -277,7 +277,7 @@ public class Chassis extends SubsystemBase {
     /**
      * Creates a path following command
      * 
-     * @param points The points to follow
+     * @param points The points to follow (including the current position)
      * @return the path following command
      */
     public Command createPathFollowingCommand(PathPoint... points) {
