@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.Chassis;
-import frc.robot.utils.General;
-import frc.robot.utils.General.Zone;
+import frc.robot.utils.Utils;
+import frc.robot.utils.Utils.Zone;
 
 /**
  * Drives the robot semi autonomously to the loading zone.
@@ -66,7 +66,7 @@ public class GotoLoadingZone extends CommandBase {
 
         PathPlannerTrajectory trajectory;
         Command pathCommand = new InstantCommand();
-        boolean red = General.isRedAlliance();
+        boolean red = Utils.isRedAlliance();
         switch (zone) {
             case COMMUNITY_BOTTOM:
                 trajectory = red ? FROM_BOTTOM_RED : FROM_BOTTOM_BLUE;
@@ -84,7 +84,7 @@ public class GotoLoadingZone extends CommandBase {
             case LOADING_ZONE:
             default:
                 trajectory = null;
-                path.add(General.createAllianceRelativePathPoint(new Translation2d(15.46, 7.34), new Rotation2d(),
+                path.add(Utils.createAllianceRelativePathPoint(new Translation2d(15.46, 7.34), new Rotation2d(),
                         new Rotation2d(), -1, Alliance.Blue));
                 break;
         }
@@ -102,7 +102,7 @@ public class GotoLoadingZone extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return !command.isScheduled() || General.hasInput(controller);
+        return !command.isScheduled() || Utils.hasInput(controller);
     }
 
     @Override

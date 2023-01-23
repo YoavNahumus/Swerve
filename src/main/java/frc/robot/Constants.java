@@ -88,10 +88,10 @@ public final class Constants {
      */
     public static final class SwerveConstants {
         public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
-                new Translation2d(0.31515, 0.27015), // front left
-                new Translation2d(0.31515, -0.27015), // front right
-                new Translation2d(-0.31515, 0.27015), // back left
-                new Translation2d(-0.31515, -0.27015) // back right
+                new Translation2d(0.26515, 0.2215), // front left
+                new Translation2d(0.26515, -0.2215), // front right
+                new Translation2d(-0.26515, 0.2215), // back left
+                new Translation2d(-0.26515, -0.2215) // back right
         );
 
         public static final int GYRO_ID = 14;

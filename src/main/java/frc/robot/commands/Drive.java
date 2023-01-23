@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.Chassis;
-import frc.robot.utils.General;
-import frc.robot.utils.General.ControllerSide;
+import frc.robot.utils.Utils;
+import frc.robot.utils.Utils.ControllerSide;
 
 /**
  * Drives the robot using the left stick for velocity and the triggers for
@@ -36,14 +36,14 @@ public class Drive extends CommandBase {
 
     @Override
     public void execute() {
-        boolean red = General.isRedAlliance();
-        Translation2d xy = General.getScaledStick(controller, ControllerSide.LEFT, 2)
+        boolean red = Utils.isRedAlliance();
+        Translation2d xy = Utils.getScaledStick(controller, ControllerSide.LEFT, 2)
                 .times(red ? -1 : 1);
         double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
-        double omega = General.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2)
+        double omega = Utils.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2)
                 * SwerveConstants.MAX_ANGULAR_SPEED;
-        Rotation2d angle = General.getStickRotation(controller, ControllerSide.RIGHT);
+        Rotation2d angle = Utils.getStickRotation(controller, ControllerSide.RIGHT);
 
         if (vx == 0 && vy == 0 && omega == 0 && angle == null)
             chassis.stop();

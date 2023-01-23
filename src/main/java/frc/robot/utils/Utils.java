@@ -6,8 +6,8 @@ import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants;
@@ -15,7 +15,7 @@ import frc.robot.Constants;
 /**
  * Contains general utility methods
  */
-public final class General {
+public final class Utils {
     /**
      * Gets the difference between two angles, accounting for wrapping around 360
      * degrees
@@ -183,7 +183,7 @@ public final class General {
      * @return true if red, false if blue
      */
     public static boolean isRedAlliance() {
-        return NetworkTableInstance.getDefault().getEntry("FMSInfo/IsRedAlliance").getBoolean(true);
+        return getAlliance() == Alliance.Red;
     }
 
     /**
@@ -221,7 +221,7 @@ public final class General {
      * @return The alliance the robot is on
      */
     public static Alliance getAlliance() {
-        return isRedAlliance() ? Alliance.Red : Alliance.Blue;
+        return DriverStation.getAlliance();
     }
 
     /**
