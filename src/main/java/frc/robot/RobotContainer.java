@@ -38,6 +38,10 @@ public class RobotContainer {
         configureButtonBindings();
     }
 
+    /**
+     * Returns the instance of the RobotContainer class.
+     * @return the instance of the RobotContainer class.
+     */
     public static RobotContainer getInstance() {
         if (instance == null) {
             instance = new RobotContainer();
