@@ -15,7 +15,6 @@ import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -35,9 +34,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
-import frc.robot.utils.Utils;
-import frc.robot.utils.VisionUtils;
 import frc.robot.utils.SwerveModule;
+import frc.robot.utils.Utils;
 
 /**
  * The subsystem that controls the robot's swerve chassis
@@ -266,6 +264,20 @@ public class Chassis extends SubsystemBase {
     /**
      * Creates a path following command
      * 
+     * @param path      The path to follow
+     * @param events    The events to run on the markers in the path
+     * @param resetPose Whether to reset the pose of the robot at the start of the
+     *                  command
+     * @return the path following command
+     */
+    public Command createPathFollowingCommand(String path, Map<String, Command> events, boolean resetPose) {
+        var trajectory = PathPlanner.loadPath(path, SwerveConstants.PATH_CONSTRAINTS);
+        return createPathFollowingCommand(trajectory, events, resetPose);
+    }
+
+    /**
+     * Creates a path following command
+     * 
      * @param path The path to follow
      * @return the path following command
      */
@@ -301,9 +313,9 @@ public class Chassis extends SubsystemBase {
     public void periodic() {
         poseEstimator.update(getGyroRotation(), getModulePositions());
         field.setRobotPose(getPose());
-        Pair<Pose2d, Double> visionInput = VisionUtils.getVisionPose();
-        if (visionInput != null)
-            addVisionInput(visionInput.getFirst(), visionInput.getSecond());
+        // Pair<Pose2d, Double> visionInput = VisionUtils.getVisionPose();
+        // if (visionInput != null)
+        //     addVisionInput(visionInput.getFirst(), visionInput.getSecond());
     }
 
     @Override

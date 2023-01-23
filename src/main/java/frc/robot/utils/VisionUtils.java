@@ -22,13 +22,17 @@ public class VisionUtils {
         double hasTarget = VisionConstants.LIMELIGHT_TABLE.getEntry("tv").getDouble(0);
         if (hasTarget == 0)
             return null;
+        
         double[] limeLightPose = VisionConstants.LIMELIGHT_TABLE.getEntry("botpose").getDoubleArray(new double[0]);
         if (limeLightPose.length != 6)
             return null;
+        
         double latency = VisionConstants.LIMELIGHT_TABLE.getEntry("tl").getDouble(0);
+
         Rotation2d robotRotation = Rotation2d.fromDegrees(limeLightPose[4]);
         Translation2d robotTranslation = new Translation2d(limeLightPose[0], limeLightPose[1])
                 .minus(VisionConstants.CAMERA_OFFSET.rotateBy(robotRotation));
+        
         return new Pair<Pose2d, Double>(
                 new Pose2d(robotTranslation, Rotation2d.fromDegrees(limeLightPose[4])),
                 Timer.getFPGATimestamp() - ((latency + VisionConstants.CAPTURE_LATENCY) / 1000));

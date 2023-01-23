@@ -10,8 +10,8 @@ import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -29,6 +29,7 @@ public class GotoLoadingZone extends CommandBase {
     private final XboxController controller;
     private Command command;
 
+    // TODO: Put paths in folder
     private static final PathPlannerTrajectory FROM_BOTTOM_BLUE = PathPlanner.loadPath("BottomToFeederBlue",
             SwerveConstants.PATH_CONSTRAINTS),
             FROM_BOTTOM_RED = PathPlanner.loadPath("BottomToFeederRed", SwerveConstants.PATH_CONSTRAINTS),
