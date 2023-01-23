@@ -108,5 +108,6 @@ public class GotoLoadingZone extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         command.cancel();
+        chassis.stop();
     }
 }
