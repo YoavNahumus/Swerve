@@ -64,6 +64,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return chassis.createPathFollowingCommand("Test2   ");
+        return chassis.createPathFollowingCommand("Test2");
     }
 }
