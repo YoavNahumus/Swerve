@@ -9,6 +9,8 @@ import com.pathplanner.lib.PathConstraints;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.utils.Rectangle;
 
 /**
@@ -112,5 +114,14 @@ public final class Constants {
         public static final double TELEOP_ROTATION_KI = 0.3;
 
         public static final double ANGLE_TOLERANCE = Math.PI / 120;
+    }
+
+    /**
+     * The Vision constants.
+     */
+    public static final class VisionConstants {
+        public static final NetworkTable LIMELIGHT_TABLE = NetworkTableInstance.getDefault().getTable("limelight");
+        public static final double CAPTURE_LATENCY = 11; // ms
+        public static final Translation2d CAMERA_OFFSET = new Translation2d(0.3, 0.0); // in meters
     }
 }
