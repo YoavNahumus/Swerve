@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Chassis;
 import frc.robot.utils.TrajectoryGenerator;
@@ -61,7 +62,6 @@ public class GotoNodes extends CommandBase {
     private final SendableChooser<Position> nodePositionChooser;
     private Position nodePosition;
 
-    private boolean interrupted;
     private boolean isScheduled;
 
     /**
@@ -112,7 +112,6 @@ public class GotoNodes extends CommandBase {
         } else {
             node = node.plus(new Translation2d(DISTANCE_CONE, 0));
         }
-        interrupted = false; // So it wont interrupt when the command intentionally cancels
 
         TrajectoryGenerator generator = new TrajectoryGenerator(Alliance.Blue);
         Rotation2d heading = node.minus(chassis.getPose().getTranslation()).getAngle();
@@ -125,7 +124,6 @@ public class GotoNodes extends CommandBase {
     @Override
     public void initialize() {
         isScheduled = true;
-        interrupted = false;
         changeTarget();
     }
 
@@ -154,6 +152,6 @@ public class GotoNodes extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Utils.hasInput(controller) || interrupted;
+        return Utils.hasInput(controller) || CommandScheduler.getInstance().requiring(chassis) != command;
     }
 }
