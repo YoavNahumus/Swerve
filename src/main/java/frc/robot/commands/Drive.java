@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveConstants;
@@ -20,6 +21,7 @@ import frc.robot.utils.Utils.ControllerSide;
 public class Drive extends CommandBase {
     private final Chassis chassis;
     private final XboxController controller;
+    private double scale = 2;
 
     /**
      * Creates a new DriveVelocities.
@@ -37,11 +39,11 @@ public class Drive extends CommandBase {
     @Override
     public void execute() {
         boolean red = Utils.isRedAlliance();
-        Translation2d xy = Utils.getScaledStick(controller, ControllerSide.LEFT, 2)
+        Translation2d xy = Utils.getScaledStick(controller, ControllerSide.LEFT, scale)
                 .times(red ? -1 : 1);
         double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
-        double omega = Utils.getScaledTriggerDiff(controller, ControllerSide.LEFT, 2)
+        double omega = Utils.getScaledTriggerDiff(controller, ControllerSide.LEFT, scale)
                 * SwerveConstants.MAX_ANGULAR_SPEED;
         Rotation2d angle = Utils.getStickRotation(controller, ControllerSide.RIGHT);
 
@@ -59,7 +61,7 @@ public class Drive extends CommandBase {
     }
 
     @Override
-    public boolean isFinished() {
-        return false;
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("Velocity Scale", () -> scale, (s) -> scale = s);
     }
 }

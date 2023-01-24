@@ -26,7 +26,7 @@ import frc.robot.utils.Rectangle;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final double JOYSTICK_DEADBAND = 0.15; // the deadband for the joysticks
+    public static final double JOYSTICK_DEADBAND = 0.1; // the deadband for the joysticks
     public static final double JOYSTICK_ANGLE_DEADBAND = 0.5; // the deadband for the angle of the joysticks
     public static final double JOYSTICK_IDLE_DEADBAND = 0.3; // the deadband to check if the joystick is idle
 
