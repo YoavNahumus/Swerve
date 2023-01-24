@@ -29,21 +29,21 @@ public class GotoLoadingZone extends CommandBase {
     private final XboxController controller;
     private Command command;
 
-    // TODO: Put paths in folder
-    private static final PathPlannerTrajectory FROM_BOTTOM_BLUE = PathPlanner.loadPath("BottomToFeederBlue",
+    private static final String PREFIX = "feeder/";
+    private static final PathPlannerTrajectory FROM_BOTTOM_BLUE = PathPlanner.loadPath(PREFIX + "BottomToFeederBlue",
             SwerveConstants.PATH_CONSTRAINTS),
-            FROM_BOTTOM_RED = PathPlanner.loadPath("BottomToFeederRed", SwerveConstants.PATH_CONSTRAINTS),
-            FROM_TOP_BLUE = PathPlanner.loadPath("TopToFeederBlue", SwerveConstants.PATH_CONSTRAINTS),
-            FROM_TOP_RED = PathPlanner.loadPath("TopToFeederRed", SwerveConstants.PATH_CONSTRAINTS),
+            FROM_BOTTOM_RED = PathPlanner.loadPath(PREFIX + "BottomToFeederRed", SwerveConstants.PATH_CONSTRAINTS),
+            FROM_TOP_BLUE = PathPlanner.loadPath(PREFIX + "TopToFeederBlue", SwerveConstants.PATH_CONSTRAINTS),
+            FROM_TOP_RED = PathPlanner.loadPath(PREFIX + "TopToFeederRed", SwerveConstants.PATH_CONSTRAINTS),
             FROM_MIDDLE_BLUE = PathPlanner.generatePath(SwerveConstants.PATH_CONSTRAINTS, Arrays.asList(
                     new PathPoint(new Translation2d(10.98, 7.34), new Rotation2d()),
                     new PathPoint(new Translation2d(15.46, 7.34), new Rotation2d()))),
             FROM_MIDDLE_RED = PathPlanner.generatePath(SwerveConstants.PATH_CONSTRAINTS, Arrays.asList(
                     new PathPoint(new Translation2d(5.56, 7.34), new Rotation2d()),
                     new PathPoint(new Translation2d(1.08, 7.34), new Rotation2d()))),
-            FROM_BOTTOM_ENTRANCE_BLUE = PathPlanner.loadPath("BottomEntranceToFeederBlue",
+            FROM_BOTTOM_ENTRANCE_BLUE = PathPlanner.loadPath(PREFIX + "BottomEntranceToFeederBlue",
                     SwerveConstants.PATH_CONSTRAINTS),
-            FROM_BOTTOM_ENTRANCE_RED = PathPlanner.loadPath("BottomEntranceToFeederRed",
+            FROM_BOTTOM_ENTRANCE_RED = PathPlanner.loadPath(PREFIX + "BottomEntranceToFeederRed",
                     SwerveConstants.PATH_CONSTRAINTS);
 
     /**
@@ -91,7 +91,8 @@ public class GotoLoadingZone extends CommandBase {
         }
 
         if (trajectory != null) {
-            path.add(new PathPoint(trajectory.getInitialPose().getTranslation(), trajectory.getInitialPose().getRotation()));
+            path.add(new PathPoint(trajectory.getInitialPose().getTranslation(),
+                    trajectory.getInitialPose().getRotation()));
             pathCommand = chassis.createPathFollowingCommand(trajectory, new HashMap<>(), false);
         }
 
