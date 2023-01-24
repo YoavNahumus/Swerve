@@ -91,9 +91,7 @@ public final class Utils {
      * @return The rounded value, in a String
      */
     public static String round(double value, int places) {
-        long factor = (long) Math.pow(10, places);
-        long temp = Math.round(value * factor);
-        return String.format("%d.%d", temp / factor, Math.abs(temp) % factor);
+        return String.format("%." + places + "f", value);
     }
 
     /**
