@@ -1,17 +1,17 @@
 package frc.robot.commands;
 
-import com.pathplanner.lib.PathPoint;
-
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Chassis;
+import frc.robot.utils.TrajectoryGenerator;
 import frc.robot.utils.Utils;
 
 /**
@@ -61,6 +61,9 @@ public class GotoNodes extends CommandBase {
     private final SendableChooser<Position> nodePositionChooser;
     private Position nodePosition;
 
+    private boolean interrupted;
+    private boolean isScheduled;
+
     /**
      * Constructor for the GotoNodes command.
      * 
@@ -72,6 +75,8 @@ public class GotoNodes extends CommandBase {
         this.controller = controller;
         gridPositionChooser = new SendableChooser<>();
         nodePositionChooser = new SendableChooser<>();
+        command = new InstantCommand();
+        isScheduled = false;
 
         initChoosers();
     }
@@ -91,6 +96,9 @@ public class GotoNodes extends CommandBase {
         SmartDashboard.putData("Grid", gridPositionChooser);
         SmartDashboard.putData("Node", nodePositionChooser);
 
+        gridPosition = Position.BOTTOM;
+        nodePosition = Position.BOTTOM;
+
         Utils.putData("Choose Node", "Choose", new InstantCommand(this::changeTarget).ignoringDisable(true));
     }
 
@@ -104,18 +112,21 @@ public class GotoNodes extends CommandBase {
         } else {
             node = node.plus(new Translation2d(DISTANCE_CONE, 0));
         }
+        interrupted = false; // So it wont interrupt when the command intentionally cancels
 
-        command = chassis.createPathFollowingCommand(
-                new PathPoint(chassis.getPose().getTranslation(), chassis.getVelocity().getAngle(),
-                        chassis.getRotation(), chassis.getVelocity().getNorm()),
-                Utils.createAllianceRelativePathPoint(node, Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(180),
-                        -1, Alliance.Blue));
+        TrajectoryGenerator generator = new TrajectoryGenerator(Alliance.Blue);
+        Rotation2d heading = node.minus(chassis.getPose().getTranslation()).getAngle();
+        
+        generator.add(new Pose2d(node, Rotation2d.fromDegrees(180)), heading);
+
+        command = chassis.createPathFollowingCommand(generator.generate(chassis.getPose()));
     }
 
     @Override
     public void initialize() {
-        initCommand();
-        command.schedule();
+        isScheduled = true;
+        interrupted = false;
+        changeTarget();
     }
 
     /**
@@ -128,19 +139,21 @@ public class GotoNodes extends CommandBase {
 
         if (command.isScheduled()) {
             command.cancel();
-            initCommand();
-            command.schedule();
         }
+        initCommand();
+        if (isScheduled)
+            command.schedule();
     }
 
     @Override
     public void end(boolean interrupted) {
         command.cancel();
         chassis.stop();
+        isScheduled = false;
     }
 
     @Override
     public boolean isFinished() {
-        return Utils.hasInput(controller) || command.isScheduled();
+        return Utils.hasInput(controller) || interrupted;
     }
 }
