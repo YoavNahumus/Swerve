@@ -47,7 +47,7 @@ public class GotoLoadingZone extends CommandBase {
                     SwerveConstants.PATH_CONSTRAINTS);
 
     /**
-     * Drives the robot semi autonomously to the loading zone.
+     * Constructs a new GotoLoadingZone command.
      * 
      * @param chassis    The chassis subsystem
      * @param controller The controller to check for input
@@ -82,7 +82,6 @@ public class GotoLoadingZone extends CommandBase {
             case OPEN_AREA:
                 trajectory = red ? FROM_MIDDLE_RED : FROM_MIDDLE_BLUE;
                 break;
-            case LOADING_ZONE:
             default:
                 trajectory = null;
                 path.add(Utils.createAllianceRelativePathPoint(new Translation2d(15.46, 7.34), new Rotation2d(),

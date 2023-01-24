@@ -6,10 +6,13 @@ import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 /**
@@ -260,5 +263,17 @@ public final class Utils {
                 || Math.abs(controller.getRightY()) > Constants.JOYSTICK_IDLE_DEADBAND
                 || Math.abs(controller.getLeftTriggerAxis()) > Constants.JOYSTICK_IDLE_DEADBAND
                 || Math.abs(controller.getRightTriggerAxis()) > Constants.JOYSTICK_IDLE_DEADBAND;
+    }
+
+    /**
+     * Puts a Sendable to the SmartDashboard with the given key and name
+     * 
+     * @param key   The key to put the Sendable to
+     * @param name  The name of the Sendable
+     * @param value The Sendable to put
+     */
+    public static void putData(String key, String name, Sendable value) {
+        SendableRegistry.add(value, name);
+        SmartDashboard.putData(key, value);
     }
 }

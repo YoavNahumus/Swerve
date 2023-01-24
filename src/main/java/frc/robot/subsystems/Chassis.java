@@ -329,11 +329,11 @@ public class Chassis extends SubsystemBase {
 
         builder.addDoubleProperty("Angle", this::getAngle, null);
 
-        SmartDashboard.putData("Change Neutral", new InstantCommand(this::swapNeutralMode).ignoringDisable(true));
+        Utils.putData("Change Neutral", "Change", new InstantCommand(this::swapNeutralMode).ignoringDisable(true));
 
-        SmartDashboard.putData("Zero Angle", new InstantCommand(this::resetAngle).ignoringDisable(true));
+        Utils.putData("Zero Angle", "Zero", new InstantCommand(this::resetAngle).ignoringDisable(true));
 
-        SmartDashboard.putData("Calibrate Offsets", new InstantCommand(() -> {
+        Utils.putData("Calibrate Offsets", "Calibrate", new InstantCommand(() -> {
             for (var module : modules) {
                 module.calibrateOffset();
             }
