@@ -39,7 +39,7 @@ public class GotoCommunity extends CommandBase {
         TrajectoryGenerator generator = new TrajectoryGenerator(Alliance.Blue);
 
         Zone zone = Zone.fromRobotLocation(chassis.getPose().getTranslation());
-        if (zone == Zone.COMMUNITY_BOTTOM || zone == Zone.COMMUNITY_TOP) {
+        if (zone == Zone.COMMUNITY_BOTTOM || zone == Zone.COMMUNITY_TOP || zone == Zone.COMMUNITY_MIDDLE) {
             return;
         }
 

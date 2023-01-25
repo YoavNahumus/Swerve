@@ -191,7 +191,7 @@ public final class Utils {
      * The zone the robot is in
      */
     public static enum Zone {
-        LOADING_ZONE, OPEN_AREA, COMMUNITY_TOP, COMMUNITY_BOTTOM, COMMUNITY_ENTRANCE_TOP, COMMUNITY_ENTRANCE_BOTTOM;
+        LOADING_ZONE, OPEN_AREA, COMMUNITY_TOP, COMMUNITY_MIDDLE, COMMUNITY_BOTTOM, COMMUNITY_ENTRANCE_TOP, COMMUNITY_ENTRANCE_BOTTOM;
 
         /**
          * Gets the zone the robot is in from its position
@@ -204,6 +204,8 @@ public final class Utils {
                 robotPosition = new Translation2d(Constants.FIELD_WIDTH - robotPosition.getX(), robotPosition.getY());
             if (Constants.COMMUNITY_BOTTOM.isInside(robotPosition))
                 return COMMUNITY_BOTTOM;
+            if (Constants.COMMUNITY_MIDDLE.isInside(robotPosition))
+                return COMMUNITY_MIDDLE;
             if (Constants.COMMUNITY_TOP.isInside(robotPosition))
                 return COMMUNITY_TOP;
             if (Constants.ENTRANCE_BOTTOM.isInside(robotPosition))

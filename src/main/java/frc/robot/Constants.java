@@ -35,10 +35,12 @@ public final class Constants {
     public static final Rectangle ENTRANCE_BOTTOM = new Rectangle(2.91, 0.0, 4.85, 1.51); // in meters, blue alliance
     public static final Rectangle ENTRANCE_TOP = new Rectangle(2.91, 3.98, 4.85, 5.49); // in meters, blue alliance
     public static final Rectangle COMMUNITY_BOTTOM = new Rectangle(0.0, 0.0, 2.91, 1.51); // in meters, blue alliance
-    public static final Rectangle COMMUNITY_TOP = new Rectangle(0.0, 1.51, 2.91, 5.49); // in meters, blue alliance
+    public static final Rectangle COMMUNITY_TOP = new Rectangle(0.0, 3.98, 2.91, 5.49); // in meters, blue alliance
+    public static final Rectangle COMMUNITY_MIDDLE = new Rectangle(0, 1.51, 2.91, 3.98); // in meters, blue alliance
     public static final Rectangle LOADING_ZONE = new Rectangle(11.69, 5.55, 16.54, 8.02); // in meters, blue alliance
 
     public static final double FIELD_WIDTH = 16.54; // in meters
+    public static final double FIELD_HEIGHT = 8.02; // in meters
 
     /**
      * The Swerve Modules constants.

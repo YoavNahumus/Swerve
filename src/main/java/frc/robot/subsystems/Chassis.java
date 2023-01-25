@@ -15,6 +15,7 @@ import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,6 +37,7 @@ import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.utils.SwerveModule;
 import frc.robot.utils.Utils;
+import frc.robot.utils.VisionUtils;
 
 /**
  * The subsystem that controls the robot's swerve chassis
@@ -313,9 +315,9 @@ public class Chassis extends SubsystemBase {
     public void periodic() {
         poseEstimator.update(getGyroRotation(), getModulePositions());
         field.setRobotPose(getPose());
-        // Pair<Pose2d, Double> visionInput = VisionUtils.getVisionPose();
-        // if (visionInput != null)
-        //     addVisionInput(visionInput.getFirst(), visionInput.getSecond());
+        Pair<Pose2d, Double> visionInput = VisionUtils.getVisionPose();
+        if (visionInput != null)
+            addVisionInput(visionInput.getFirst(), visionInput.getSecond());
     }
 
     @Override

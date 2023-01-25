@@ -7,7 +7,9 @@ import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Constants;
 
 /**
  * Utility class for generating trajectories
@@ -60,7 +62,10 @@ public class TrajectoryGenerator {
      * @return The generated trajectory
      */
     public PathPoint[] generate(Pose2d startPosition) {
-        headings.add(0, positions.get(0).getTranslation().minus(startPosition.getTranslation()).getAngle());
+        Translation2d firstPosition = positions.get(0).getTranslation();
+        if (Utils.getAlliance() != alliance)
+            firstPosition = new Translation2d(Constants.FIELD_WIDTH - firstPosition.getX(), firstPosition.getY());
+        headings.add(0, firstPosition.minus(startPosition.getTranslation()).getAngle());
         positions.add(0, startPosition);
         velocities.add(0, -1.);
 
