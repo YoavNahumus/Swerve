@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Drive;
+import frc.robot.commands.GoUpRamp;
 import frc.robot.commands.GotoCommunity;
 import frc.robot.commands.GotoLoadingZone;
 import frc.robot.commands.GotoNodes;
@@ -32,6 +33,7 @@ public class RobotContainer {
     private final XboxController controller = new XboxController(0);
     private final JoystickButton aButton = new JoystickButton(controller, 1);
     private final JoystickButton bButton = new JoystickButton(controller, 2);
+    private final JoystickButton xButton = new JoystickButton(controller, 3);
     private final Chassis chassis;
     private static RobotContainer instance;
 
@@ -41,13 +43,14 @@ public class RobotContainer {
     private RobotContainer() {
         chassis = new Chassis();
         chassis.setDefaultCommand(new Drive(chassis, controller));
-        SmartDashboard.putData((Sendable)chassis.getDefaultCommand());
+        SmartDashboard.putData((Sendable) chassis.getDefaultCommand());
 
         configureButtonBindings();
     }
 
     /**
      * Returns the instance of the RobotContainer class.
+     * 
      * @return the instance of the RobotContainer class.
      */
     public static RobotContainer getInstance() {
@@ -66,6 +69,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         aButton.onTrue(new GotoLoadingZone(chassis, controller));
         bButton.onTrue(new GotoCommunity(chassis, controller).andThen(new GotoNodes(chassis, controller)));
+        xButton.onTrue(new GoUpRamp(chassis, 1.5));
     }
 
     /**

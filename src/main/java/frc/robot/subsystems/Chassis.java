@@ -48,6 +48,7 @@ public class Chassis extends SubsystemBase {
     private final PigeonIMU gyro;
     private final SwerveDrivePoseEstimator poseEstimator;
     private final PIDController angleController;
+    private final double startRoll, startPitch;
     private boolean isBreak;
 
     /**
@@ -71,6 +72,9 @@ public class Chassis extends SubsystemBase {
         isBreak = true;
 
         SmartDashboard.putData(this);
+
+        startPitch = gyro.getPitch();
+        startRoll = gyro.getRoll();
     }
 
     /**
@@ -311,6 +315,36 @@ public class Chassis extends SubsystemBase {
         poseEstimator.addVisionMeasurement(estimatedPose, timeOfMeasurement);
     }
 
+    public double getRoll() {
+        return gyro.getRoll() - startRoll;
+    }
+
+    public double getPitch() {
+        return gyro.getPitch() - startPitch;
+    }
+
+    public double getUpRotation() {
+        double pitch = getPitch();
+        double roll = getRoll();
+        double sign;
+        if (Math.abs(pitch) > Math.abs(roll))
+            sign = Math.signum(pitch);
+        else
+            sign = Math.signum(roll);
+        return sign * Math.sqrt(pitch * pitch + roll * roll);
+    }
+
+    public double getUpAngularVel() {
+        double[] arr = new double[3];
+        gyro.getRawGyro(arr);
+        double sign;
+        if (Math.abs(arr[0]) > Math.abs(arr[1]))
+            sign = Math.signum(arr[0]);
+        else
+            sign = Math.signum(arr[1]);
+        return sign * Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1]);
+    }
+
     @Override
     public void periodic() {
         poseEstimator.update(getGyroRotation(), getModulePositions());
@@ -330,6 +364,9 @@ public class Chassis extends SubsystemBase {
         SmartDashboard.putData("Field", field);
 
         builder.addDoubleProperty("Angle", this::getAngle, null);
+
+        Utils.addDoubleProperty(builder, "UpAngle", this::getUpRotation, 2);
+        Utils.addDoubleProperty(builder, "UpAngularVel", this::getUpAngularVel, 2);
 
         Utils.putData("Change Neutral", "Change", new InstantCommand(this::swapNeutralMode).ignoringDisable(true));
 
