@@ -315,14 +315,29 @@ public class Chassis extends SubsystemBase {
         poseEstimator.addVisionMeasurement(estimatedPose, timeOfMeasurement);
     }
 
+    /**
+     * Gets the roll of the robot
+     * 
+     * @return The roll of the robot
+     */
     public double getRoll() {
         return gyro.getRoll() - startRoll;
     }
 
+    /**
+     * Gets the pitch of the robot
+     * 
+     * @return The pitch of the robot
+     */
     public double getPitch() {
         return gyro.getPitch() - startPitch;
     }
 
+    /**
+     * Gets the upwards rotation of the robot
+     * 
+     * @return The upwards rotation of the robot
+     */
     public double getUpRotation() {
         double pitch = getPitch();
         double roll = getRoll();
@@ -334,6 +349,11 @@ public class Chassis extends SubsystemBase {
         return sign * Math.sqrt(pitch * pitch + roll * roll);
     }
 
+    /**
+     * Gets the upwards angular velocity of the robot
+     * 
+     * @return The upwards angular velocity of the robot
+     */
     public double getUpAngularVel() {
         double[] arr = new double[3];
         gyro.getRawGyro(arr);
