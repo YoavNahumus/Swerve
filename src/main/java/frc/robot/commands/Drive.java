@@ -21,7 +21,8 @@ import frc.robot.utils.Utils.ControllerSide;
 public class Drive extends CommandBase {
     private final Chassis chassis;
     private final XboxController controller;
-    private double scale = 2;
+    private double scaleVelocity = 2;
+    private double scaleRotation = 2;
 
     /**
      * Creates a new DriveVelocities.
@@ -39,11 +40,11 @@ public class Drive extends CommandBase {
     @Override
     public void execute() {
         boolean red = Utils.isRedAlliance();
-        Translation2d xy = Utils.getScaledStick(controller, ControllerSide.LEFT, scale)
+        Translation2d xy = Utils.getScaledStick(controller, ControllerSide.LEFT, scaleVelocity)
                 .times(red ? -1 : 1);
         double vx = xy.getY() * SwerveConstants.MAX_DRIVE_SPEED;
         double vy = -xy.getX() * SwerveConstants.MAX_DRIVE_SPEED;
-        double omega = Utils.getScaledTriggerDiff(controller, ControllerSide.LEFT, scale)
+        double omega = Utils.getScaledTriggerDiff(controller, ControllerSide.LEFT, scaleRotation)
                 * SwerveConstants.MAX_ANGULAR_SPEED;
         Rotation2d angle = Utils.getStickRotation(controller, ControllerSide.RIGHT);
 
@@ -62,6 +63,7 @@ public class Drive extends CommandBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Velocity Scale", () -> scale, (s) -> scale = s);
+        builder.addDoubleProperty("Velocity Scale", () -> scaleVelocity, (s) -> scaleVelocity = s);
+        builder.addDoubleProperty("Rotation Scale", () -> scaleRotation, (s) -> scaleRotation = s);
     }
 }
