@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants;
 import frc.robot.subsystems.Chassis;
 import frc.robot.utils.TrajectoryGenerator;
 import frc.robot.utils.Utils;
@@ -116,14 +115,7 @@ public class GotoNodes extends CommandBase {
 
         TrajectoryGenerator generator = new TrajectoryGenerator(Alliance.Blue);
 
-        Rotation2d heading;
-        if (Utils.isRedAlliance())
-            heading = new Translation2d(Constants.FIELD_WIDTH - node.getX(), node.getY())
-                    .minus(chassis.getPose().getTranslation()).getAngle();
-        else
-            heading = node.minus(chassis.getPose().getTranslation()).getAngle();
-
-        generator.add(new Pose2d(node, Rotation2d.fromDegrees(180)), heading.rotateBy(Rotation2d.fromDegrees(Utils.isRedAlliance() ? 180 : 0)));
+        generator.add(new Pose2d(node, Rotation2d.fromDegrees(180)));
 
         command = chassis.createPathFollowingCommand(generator.generate(chassis.getPose()));
     }

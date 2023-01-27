@@ -56,16 +56,41 @@ public class TrajectoryGenerator {
     }
 
     /**
+     * Adds a point to the trajectory
+     * 
+     * @param robotPosition The robot's position
+     */
+    public void add(Pose2d robotPosition) {
+        add(robotPosition, null);
+    }
+
+    /**
+     * Calculates the heading of a point based on the previous and next points
+     * 
+     * @param index The index of the point to calculate the heading of
+     * @return The calculated heading
+     */
+    private Rotation2d calculateHeading(int index) {
+        if (index < 0 && index >= positions.size())
+            throw new IllegalArgumentException(
+                    "Index must be between 0 and " + (positions.size() - 1) + " (inclusive)");
+        return positions.get(Math.min(index + 1, positions.size() - 1)).getTranslation()
+                .minus(positions.get(Math.max(index - 1, 0)).getTranslation()).getAngle();
+    }
+
+    /**
      * Generates the trajectory, converts the points to the current alliance
      * 
      * @param startPosition The robot's starting position to enter the trajectory
+     *                      (relative to the field)
      * @return The generated trajectory
      */
     public PathPoint[] generate(Pose2d startPosition) {
-        Translation2d firstPosition = positions.get(0).getTranslation();
-        if (Utils.getAlliance() != alliance)
-            firstPosition = new Translation2d(Constants.FIELD_WIDTH - firstPosition.getX(), firstPosition.getY());
-        headings.add(0, firstPosition.minus(startPosition.getTranslation()).getAngle());
+        if (alliance != Utils.getAlliance())
+            startPosition = new Pose2d(
+                    new Translation2d(Constants.FIELD_WIDTH - startPosition.getX(), startPosition.getY()),
+                    startPosition.getRotation().rotateBy(Rotation2d.fromDegrees(180)));
+        headings.add(0, null);
         positions.add(0, startPosition);
         velocities.add(0, -1.);
 
@@ -80,8 +105,13 @@ public class TrajectoryGenerator {
     public PathPoint[] generate() {
         PathPoint[] path = new PathPoint[headings.size()];
         for (int i = 0; i < path.length; i++) {
-            path[i] = Utils.createAllianceRelativePathPoint(positions.get(i).getTranslation(), headings.get(i),
-                    positions.get(i).getRotation(), velocities.get(i), i == 0 ? Utils.getAlliance() : alliance);
+            Pose2d position = positions.get(i);
+            Rotation2d heading = headings.get(i);
+            double velocity = velocities.get(i);
+            if (heading == null)
+                heading = calculateHeading(i);
+            path[i] = Utils.createAllianceRelativePathPoint(position.getTranslation(), heading,
+                    position.getRotation(), velocity, alliance);
         }
 
         return path;
