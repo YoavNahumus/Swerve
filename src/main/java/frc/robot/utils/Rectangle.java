@@ -35,7 +35,7 @@ public class Rectangle {
      * Checks if a point is inside the rectangle
      * 
      * @param point The point to check
-     * @return      Whether the point is inside the rectangle
+     * @return Whether the point is inside the rectangle
      */
     public boolean isInside(Translation2d point) {
         return point.getX() >= bottomLeft.getX() && point.getX() <= topRight.getX()

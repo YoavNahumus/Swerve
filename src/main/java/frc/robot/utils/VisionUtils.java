@@ -23,11 +23,11 @@ public class VisionUtils {
         double hasTarget = VisionConstants.LIMELIGHT_TABLE.getEntry("tv").getDouble(0);
         if (hasTarget == 0)
             return null;
-        
+
         double[] limeLightPose = VisionConstants.LIMELIGHT_TABLE.getEntry("botpose").getDoubleArray(new double[0]);
         if (limeLightPose.length != 6)
             return null;
-        
+
         double latency = VisionConstants.LIMELIGHT_TABLE.getEntry("tl").getDouble(0);
         limeLightPose[0] = Constants.FIELD_WIDTH / 2 - limeLightPose[0];
         limeLightPose[1] = limeLightPose[1] + Constants.FIELD_HEIGHT / 2;

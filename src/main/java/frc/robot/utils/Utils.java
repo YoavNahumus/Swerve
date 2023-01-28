@@ -191,7 +191,8 @@ public final class Utils {
      * The zone the robot is in
      */
     public static enum Zone {
-        LOADING_ZONE, OPEN_AREA, COMMUNITY_TOP, COMMUNITY_MIDDLE, COMMUNITY_BOTTOM, COMMUNITY_ENTRANCE_TOP, COMMUNITY_ENTRANCE_BOTTOM;
+        LOADING_ZONE, OPEN_AREA, COMMUNITY_TOP, COMMUNITY_MIDDLE, COMMUNITY_BOTTOM, COMMUNITY_ENTRANCE_TOP,
+        COMMUNITY_ENTRANCE_BOTTOM;
 
         /**
          * Gets the zone the robot is in from its position
@@ -235,11 +236,12 @@ public final class Utils {
      * @param holonomicRotation The holonomic rotation of the point
      * @param velocity          The velocity of the point, -1 for default
      * @param alliance          The alliance the point is relative to
-     * @return The path point, with the position and heading relative to the alliance
+     * @return The path point, with the position and heading relative to the
+     *         alliance
      */
     public static PathPoint createAllianceRelativePathPoint(Translation2d position, Rotation2d heading,
             Rotation2d holonomicRotation, double velocity, Alliance alliance) {
-        
+
         if (getAlliance() != alliance) {
             position = new Translation2d(Constants.FIELD_WIDTH - position.getX(), position.getY());
             heading = heading.rotateBy(Rotation2d.fromDegrees(180));

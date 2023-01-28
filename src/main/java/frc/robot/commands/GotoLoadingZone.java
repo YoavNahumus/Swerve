@@ -49,7 +49,7 @@ public class GotoLoadingZone extends CommandBase {
             switch (zone) {
                 case COMMUNITY_MIDDLE:
                     generator.add(new Pose2d(new Translation2d(2.17, 4.74), new Rotation2d()),
-                    new Rotation2d());
+                            new Rotation2d());
                 case COMMUNITY_TOP:
                 case COMMUNITY_ENTRANCE_TOP:
                     generator.add(new Pose2d(new Translation2d(5.57, 4.9), new Rotation2d()),
