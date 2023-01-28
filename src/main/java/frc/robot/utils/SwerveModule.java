@@ -190,8 +190,6 @@ public class SwerveModule implements Sendable {
     public void initSendable(SendableBuilder builder) {
         Utils.addDoubleProperty(builder, "Angle", this::getAngle, 2);
         builder.addDoubleProperty("Velocity", this::getVelocity, null);
-        builder.addDoubleProperty("Angle Error", angleMotor::getClosedLoopError, null);
-        builder.addDoubleProperty("Velocity Error", moveMotor::getClosedLoopError, null);
         builder.addDoubleProperty("Angle Offset", () -> angleOffset, null);
     }
 }
