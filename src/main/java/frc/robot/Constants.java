@@ -27,7 +27,7 @@ import frc.robot.utils.Rectangle;
  */
 public final class Constants {
     public static final double JOYSTICK_DEADBAND = 0.1; // the deadband for the joysticks
-    public static final double JOYSTICK_ANGLE_DEADBAND = 0.5; // the deadband for the angle of the joysticks
+    public static final double JOYSTICK_ANGLE_DEADBAND = 0.2; // the deadband for the angle of the joysticks
     public static final double JOYSTICK_IDLE_DEADBAND = 0.3; // the deadband to check if the joystick is idle
 
     public static final Rectangle RAMP = new Rectangle(2.91, 1.51, 4.85, 3.98); // in meters, blue alliance
@@ -81,10 +81,10 @@ public final class Constants {
             this.absoluteEncoderID = absoluteEncoderID;
         }
 
-        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(214.541, 7, 8, 11);
-        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(301.992, 5, 6, 13);
-        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(224.912, 1, 2, 10);
-        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(108.896, 3, 4, 12);
+        public static final SwerveModuleConstants FRONT_LEFT = new SwerveModuleConstants(0.703125, 7, 8, 11);
+        public static final SwerveModuleConstants FRONT_RIGHT = new SwerveModuleConstants(303.134765625, 5, 6, 13);
+        public static final SwerveModuleConstants BACK_LEFT = new SwerveModuleConstants(224.736328125, 1, 2, 10);
+        public static final SwerveModuleConstants BACK_RIGHT = new SwerveModuleConstants(109.423828125, 3, 4, 12);
     }
 
     /**

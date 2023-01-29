@@ -20,6 +20,7 @@ import frc.robot.Constants.SwerveModuleConstants;
  */
 public class SwerveModule implements Sendable {
     private double angleOffset;
+    private double desiredVelocity, desiredAngle;
     private final TalonFX moveMotor, angleMotor;
     private final CANCoder absoluteEncoder;
 
@@ -33,6 +34,9 @@ public class SwerveModule implements Sendable {
         moveMotor = new TalonFX(constants.moveMotorID);
         angleMotor = new TalonFX(constants.angleMotorID);
         absoluteEncoder = new CANCoder(constants.absoluteEncoderID);
+
+        desiredAngle = 0;
+        desiredVelocity = 0;
         configureDevices();
     }
 
@@ -85,6 +89,7 @@ public class SwerveModule implements Sendable {
      * @param velocity The velocity to set the module to, in meters per second
      */
     public void setVelocity(double velocity) {
+        desiredVelocity = velocity;
         moveMotor.set(ControlMode.Velocity, velocity * SwerveModuleConstants.PULSE_PER_METER / 10,
                 DemandType.ArbitraryFeedForward, SwerveModuleConstants.VELOCITY_FF.calculate(velocity));
     }
@@ -106,6 +111,7 @@ public class SwerveModule implements Sendable {
      * @param angle The angle to set the module to, in degrees
      */
     public void setAngle(double angle) {
+        desiredAngle = angle;
         angleMotor.set(ControlMode.Position, calculateTarget(angle));
     }
 
@@ -191,5 +197,8 @@ public class SwerveModule implements Sendable {
         Utils.addDoubleProperty(builder, "Angle", this::getAngle, 2);
         builder.addDoubleProperty("Velocity", this::getVelocity, null);
         builder.addDoubleProperty("Angle Offset", () -> angleOffset, null);
+
+        builder.addDoubleProperty("Desired Velocity", () -> desiredVelocity, null);
+        builder.addDoubleProperty("Desired Angle", () -> desiredAngle, null);
     }
 }
